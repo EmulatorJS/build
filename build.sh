@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
 initialPath="$PWD"
+outPath="RetroArch/dist-scripts"
 
 compileProject() {
-    outPath="RetroArch/dist-scripts"
     name=$1
     downloadLink=$2
     makefilePath=$3
@@ -13,6 +13,7 @@ compileProject() {
         git clone "$downloadLink" "$name"
     fi
     cd "$name"
+    git pull
     cd "$makefilePath"
     emmake make -f "$makefileName" platform=emscripten || (echo "If the error is \"unknown argument: -no-undefined\", please go into $makefileName and remove the flag from the make options" && exit 1)
     linkerfilename=( *.bc )
@@ -27,12 +28,20 @@ compileProject() {
 if [ ! -d "RetroArch" ]; then
     git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch"
 fi
+cd RetroArch && git pull && cd ../
+
+cd "$outPath" && rm *.bc && cd "$initialPath"
+
+if [ ! -d "EmulatorJS" ]; then
+    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS"
+fi
+cd EmulatorJS && git pull && cd ../
 
 compileProject "libretro-fceumm" "https://github.com/libretro/libretro-fceumm.git" "./" "Makefile.libretro"
 compileProject "nestopia" "https://github.com/EmulatorJS/nestopia.git" "./libretro" "Makefile"
 compileProject "snes9x" "https://github.com/EmulatorJS/snes9x.git" "./libretro" "Makefile"
 compileProject "gambatte-libretro" "https://github.com/libretro/gambatte-libretro.git" "./" "Makefile.libretro"
-compileProject "mgba" "https://github.com/libretro/mgba.git" "./libretro-build" "Makefile.common"
+compileProject "mgba" "https://github.com/libretro/mgba.git" "./" "Makefile.libretro"
 compileProject "beetle-vb-libretro" "https://github.com/EmulatorJS/beetle-vb-libretro.git" "./" "Makefile"
 compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile"
 compileProject "melonDS" "https://github.com/EmulatorJS/melonDS.git" "./" "Makefile"
