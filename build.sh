@@ -15,7 +15,7 @@ compileProject() {
     cd "$name"
     git pull
     cd "$makefilePath"
-    emmake make -f "$makefileName" platform=emscripten || (echo "If the error is \"unknown argument: -no-undefined\", please go into $makefileName and remove the flag from the make options" && exit 1)
+    emmake make -f "$makefileName" platform=emscripten || exit 1
     linkerfilename=( *.bc )
     if [ -f "$initialPath/$outPath/$linkerfilename" ] ; then
         rm "$initialPath/$outPath/$linkerfilename"
@@ -29,6 +29,8 @@ if [ ! -d "RetroArch" ]; then
     git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch"
 fi
 cd RetroArch && git pull && cd ../
+
+echo pwd
 
 cd "$outPath" && rm *.bc && cd "$initialPath"
 
@@ -50,6 +52,15 @@ compileProject "a5200" "https://github.com/EmulatorJS/a5200.git" "./" "Makefile"
 compileProject "mame2003-libretro" "https://github.com/libretro/mame2003-libretro.git" "./" "Makefile"
 compileProject "fbalpha2012_cps1" "https://github.com/libretro/fbalpha2012_cps1.git" "./" "makefile.libretro"
 compileProject "fbalpha2012_cps2" "https://github.com/libretro/fbalpha2012_cps2.git" "./" "makefile.libretro"
+compileProject "prosystem" "https://github.com/EmulatorJS/prosystem-libretro.git" "./" "Makefile"
+compileProject "stella2014" "https://github.com/EmulatorJS/stella2014-libretro.git" "./" "Makefile"
+compileProject "opera" "https://github.com/EmulatorJS/opera-libretro.git" "./" "Makefile"
+compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro"
+compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
+compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
+compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
+
+
 
 cd "RetroArch/dist-scripts"
 
