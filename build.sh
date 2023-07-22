@@ -11,9 +11,12 @@ compileProject() {
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
+        cd "$name"
+        git submodule update --init --recursive
     fi
     cd "$name"
     git pull
+    git submodule update --recursive
     cd "$makefilePath"
     emmake make -f "$makefileName" platform=emscripten || exit 1
     linkerfilename=( *.bc )
@@ -59,7 +62,8 @@ compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.
 compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
 compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
 compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
-
+compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro"
+compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "Makefile.libretro"
 
 
 cd "RetroArch/dist-scripts"
