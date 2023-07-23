@@ -64,7 +64,7 @@ compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "
 compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
 compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro"
 compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "Makefile.libretro"
-
+compileProject "fbneo" "https://github.com/libretro/FBNeo.git" "./src/burner/libretro" "Makefile"
 
 cd "RetroArch/dist-scripts"
 
