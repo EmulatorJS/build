@@ -72,6 +72,7 @@ compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libr
 compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro"
 compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "Makefile.libretro"
 compileProject "fbneo" "https://github.com/EmulatorJS/FBNeo.git" "./src/burner/libretro" "Makefile"
+compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile"
 
 cd "RetroArch/dist-scripts"
 
