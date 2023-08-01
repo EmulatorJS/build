@@ -31,16 +31,22 @@ compileProject() {
 if [ ! -d "RetroArch" ]; then
     git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch"
 fi
-cd RetroArch && git pull && cd ../
+cd RetroArch
+git pull
+cd ../
 
-echo pwd
+echo $initialPath
 
-cd "$outPath" && rm *.bc && cd "$initialPath"
+cd "$outPath"
+rm *.bc
+cd "$initialPath"
 
 if [ ! -d "EmulatorJS" ]; then
     git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS"
 fi
-cd EmulatorJS && git pull && cd ../
+cd EmulatorJS
+git pull
+cd ../
 
 compileProject "libretro-fceumm" "https://github.com/libretro/libretro-fceumm.git" "./" "Makefile.libretro"
 compileProject "nestopia" "https://github.com/EmulatorJS/nestopia.git" "./libretro" "Makefile"
