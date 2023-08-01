@@ -13,6 +13,7 @@ compileProject() {
         git clone "$downloadLink" "$name"
         cd "$name"
         git submodule update --init --recursive
+        cd ../
     fi
     cd "$name"
     git pull
