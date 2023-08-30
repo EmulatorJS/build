@@ -78,6 +78,7 @@ compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "M
 compileProject "fbneo" "https://github.com/EmulatorJS/FBNeo.git" "./src/burner/libretro" "Makefile" "no"
 compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile" "no"
 compileProject "beetle-pce" "https://github.com/EmulatorJS/beetle-pce-libretro.git" "./" "Makefile" "no"
+compileProject "beetle-ngp" "https://github.com/EmulatorJS/beetle-ngp-libretro.git" "./" "Makefile" "no"
 compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile" "no"
 
 cd "RetroArch/dist-scripts"
