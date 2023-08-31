@@ -79,6 +79,8 @@ compileProject "fbneo" "https://github.com/EmulatorJS/FBNeo.git" "./src/burner/l
 compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile" "no"
 compileProject "beetle-pce" "https://github.com/EmulatorJS/beetle-pce-libretro.git" "./" "Makefile" "no"
 compileProject "beetle-ngp" "https://github.com/EmulatorJS/beetle-ngp-libretro.git" "./" "Makefile" "no"
+compileProject "beetle-wswan" "https://github.com/EmulatorJS/beetle-wswan-libretro.git" "./" "Makefile" "no"
+compileProject "gearcoleco" "https://github.com/EmulatorJS/Gearcoleco.git" "./platforms/libretro/" "Makefile" "no"
 compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile" "no"
 
 cd "RetroArch/dist-scripts"
