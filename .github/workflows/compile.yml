@@ -12,12 +12,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: 
-      image: git.libretro.com:5050/libretro-infrastructure/libretro-build-emscripten:latest
       options: --user root
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Install
+        run: apt install -y binutils-mips-linux-gnu build-essential pkgconf python3 git
+
+      - name: Setup Emscripten
+        run: cd; && git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh
         
       - name: Build
         run: bash build.sh
