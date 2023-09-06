@@ -21,7 +21,7 @@ jobs:
         run: sudo apt install -y binutils-mips-linux-gnu build-essential pkgconf python3 git
 
       - name: Setup Emscripten
-        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh"
+        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && echo 'source $(pwd)/emsdk_env.sh' >> $HOME/.bash_profile"
         
       - name: Build
         run: bash build.sh
