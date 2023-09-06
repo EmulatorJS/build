@@ -32,14 +32,15 @@ jobs:
             EmulatorJS/data/cores/*.data
 
       - name: Get Version
-        outputs:
-        version: ${{ steps.version.outputs.version }}
+        id: version
+        run: echo "VERSION=$(cat VERSION)" >> "$GITHUB_OUTPUT"
 
       - name: Create Release & Make Notes & Upload Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
         run: |
-          gh release create "v$(cat VERSION)" --title "Latest Version" --generate-notes
-          gh release upload "v$(cat VERSION)" EmulatorJS/data/cores/*.data
-          gh release upload "v$(cat VERSION)" EmulatorJS\ Cores.zip
-          gh release upload "v$(cat VERSION)" "checksum.txt#checksum-256.txt"
+          gh release create "v$VERSION" --title "Latest Version" --generate-notes
+          gh release upload "v$VERSION" EmulatorJS/data/cores/*.data
+          gh release upload "v$VERSION" EmulatorJS\ Cores.zip
+          gh release upload "v$VERSION" "checksum.txt#checksum-256.txt"
