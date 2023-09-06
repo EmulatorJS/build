@@ -23,7 +23,7 @@ jobs:
         run: "source ./.emsdk/emsdk_env.sh && bash mini_build.sh"
 
       - name: Zip files
-        run: "zip -r "EmulatorJS Cores.zip" EmulatorJS/data/cores/*.data"
+        run: "zip -r 'EmulatorJS Cores.zip' EmulatorJS/data/cores/*.data"
 
       - name: Generate checksums
         uses: jmgilman/actions-generate-checksum@v1
