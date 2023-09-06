@@ -21,10 +21,10 @@ jobs:
         run: sudo apt install -y binutils-mips-linux-gnu build-essential pkgconf python3 git
 
       - name: Setup Emscripten
-        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && echo 'source $(pwd)/emsdk_env.sh' >> $HOME/.bash_profile"
+        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd ../"
         
       - name: Build
-        run: bash build.sh
+        run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
