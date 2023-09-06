@@ -3,5 +3,4 @@
 !/build.sh
 !/LICENSE
 !/.github/workflows/compile.yml
-!/mini_build.sh
 

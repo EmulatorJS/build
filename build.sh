@@ -83,6 +83,7 @@ compileProject "beetle-ngp" "https://github.com/EmulatorJS/beetle-ngp-libretro.g
 compileProject "beetle-wswan" "https://github.com/EmulatorJS/beetle-wswan-libretro.git" "./" "Makefile" "no"
 compileProject "gearcoleco" "https://github.com/EmulatorJS/Gearcoleco.git" "./platforms/libretro/" "Makefile" "no"
 compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile" "no"
+compileProject "mame2003-plus" "https://github.com/EmulatorJS/mame2003-plus-libretro.git" "./" "Makefile" "no"
 
 cd "RetroArch/dist-scripts"
 
