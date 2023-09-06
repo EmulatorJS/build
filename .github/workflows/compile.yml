@@ -24,7 +24,7 @@ jobs:
         run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd ../"
         
       - name: Build
-        run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
+        run: "source ./.emsdk/emsdk_env.sh && bash mini_build.sh"
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v2
