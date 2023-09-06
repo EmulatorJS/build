@@ -1,0 +1,51 @@
+name: CI Emscripten
+
+on:
+  push:
+    paths:
+      - 'VERSION'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: 
+      image: git.libretro.com:5050/libretro-infrastructure/libretro-build-emscripten:latest
+      options: --user root
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Build
+        run: bash build.sh
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-artifacts
+          path: |
+            EmulatorJS/data/cores/*.data
+     
+      - name: Generate checksum
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          patterns: |
+            EmulatorJS/data/cores/*.data
+
+      - name: Create Release & Make Notes & Upload Assets
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v_latest" --title "v_latest" --generate-notes
+          gh release upload "v_latest" EmulatorJS/data/cores/*.data
+          gh release upload "v_latest" "checksum.txt#checksum-256.txt"
+
+      - name: Purge artifacts
+        uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          expire-in: 0
