@@ -6,50 +6,36 @@ on:
       - 'VERSION'
       - '.github/workflows/compile.yml'
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         
-      - name: Install
-        run: sudo apt install -y binutils-mips-linux-gnu build-essential pkgconf python3 git
+      - name: Install Dependencies
+        run: sudo apt install -y binutils-mips-linux-gnu build-essential pkgconf python3 git zip
 
       - name: Setup Emscripten
         run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd ../"
         
-      - name: Build
+      - name: Build Cores
         run: "source ./.emsdk/emsdk_env.sh && bash mini_build.sh"
 
-      - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-artifacts
-          path: |
-            EmulatorJS/data/cores/*.data
-     
-      - name: Generate checksum
+      - name: Zip files
+        run: "zip -r EmulatorJS\ Cores.zip EmulatorJS/data/cores/*.data"
+
+      - name: Generate checksums
         uses: jmgilman/actions-generate-checksum@v1
         with:
           patterns: |
             EmulatorJS/data/cores/*.data
 
       - name: Create Release & Make Notes & Upload Assets
-        id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "v_latest" --title "v_latest" --generate-notes
-          gh release upload "v_latest" EmulatorJS/data/cores/*.data
-          gh release upload "v_latest" "checksum.txt#checksum-256.txt"
-
-      - name: Purge artifacts
-        uses: kolpav/purge-artifacts-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 0
+          gh release create "v1.0" --title "Latest Version" --generate-notes
+          gh release upload "v1.0" EmulatorJS/data/cores/*.data
+          gh release upload "v1.0" EmulatorJS/data/cores/EmulatorJS\ Cores.zip
+          gh release upload "v1.0" "checksum.txt#checksum-256.txt"
