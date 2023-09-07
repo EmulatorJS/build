@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'VERSION'
-      - '.github/workflows/compile.yml'
 
 jobs:
   build:
