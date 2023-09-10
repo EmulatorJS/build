@@ -16,7 +16,7 @@ jobs:
         run: sudo apt install -y p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip
 
       - name: Setup Emscripten
-        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd ../"
+        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
         
       - name: Build Cores
         run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
