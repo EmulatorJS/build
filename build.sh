@@ -62,6 +62,7 @@ compileProject "beetle-vb-libretro" "https://github.com/EmulatorJS/beetle-vb-lib
 compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile" "no"
 compileProject "melonDS" "https://github.com/EmulatorJS/melonDS.git" "./" "Makefile" "no"
 compileProject "desmume2015" "https://github.com/EmulatorJS/desmume2015.git" "./desmume" "Makefile.libretro" "no"
+compileProject "desmume" "https://github.com/EmulatorJS/desmume.git" "./desmume/src/frontend/libretro" "Makefile.libretro" "no"
 compileProject "a5200" "https://github.com/EmulatorJS/a5200.git" "./" "Makefile" "no"
 compileProject "mame2003-libretro" "https://github.com/EmulatorJS/mame2003-libretro.git" "./" "Makefile" "no"
 compileProject "fbalpha2012_cps1" "https://github.com/EmulatorJS/fbalpha2012_cps1.git" "./" "makefile.libretro" "no"
