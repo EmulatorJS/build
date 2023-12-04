@@ -22,9 +22,9 @@ compileProject() {
     cd "$makefilePath"
     emmake make clean
     if [ "$threads" = "yes" ] ; then
-        emmake make -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 || exit 1
+        emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 || exit 1
     else
-        emmake make -f "$makefileName" platform=emscripten || exit 1
+        emmake make -j$(nproc) -f "$makefileName" platform=emscripten || exit 1
     fi
     linkerfilename=( *.bc )
     rm -f "$initialPath/$outPath/$linkerfilename"
