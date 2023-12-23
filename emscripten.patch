@@ -1,18 +1,18 @@
---- upstream/emscripten/src/library_webgl.js	2021-03-05 12:32:24.000000000 -0800
-+++ upstream/emscripten/src/library_webgl.js	2022-05-02 10:19:02.461667100 -0700
-@@ -3486,6 +3486,7 @@
-   glDrawElements: function(mode, count, type, indices) {
+--- upstream/emscripten/src/library_webgl.js    2023-12-23 00:07:24.746592847 -0600
++++ upstream/emscripten/src/library_webgl.js    2023-12-23 00:06:51.298796601 -0600
+@@ -3907,6 +3907,7 @@
+   glDrawElements: (mode, count, type, indices) => {
  #if FULL_ES2
      var buf;
 +    var vertices = 0;
      if (!GLctx.currentElementArrayBufferBinding) {
        var size = GL.calcBufLength(1, type, 0, count);
        buf = GL.getTempIndexBuffer(size);
-@@ -3493,12 +3494,26 @@
+@@ -3914,12 +3915,25 @@
        GLctx.bufferSubData(0x8893 /*GL_ELEMENT_ARRAY_BUFFER*/,
                                 0,
                                 HEAPU8.subarray(indices, indices + size));
-+      
++
 +      // Detecting vertex count if attributes' data should be loaded
 +      var array_classes = {
 +        '5121' /* GL_UNSIGNED_BYTE */: Uint8Array,
@@ -25,7 +25,6 @@
 +          break;
 +        }
 +      }
-+      
        // the index is now 0
        indices = 0;
      }
@@ -36,3 +35,11 @@
  #endif
  
      GLctx.drawElements(mode, count, type, indices);
+@@ -4163,7 +4177,7 @@
+   glMapBufferRange__deps: ['$emscriptenWebGLGetBufferBinding', '$emscriptenWebGLValidateMapBufferTarget', 'malloc'],
+   glMapBufferRange: (target, offset, length, access) => {
+     if ((access & (0x1/*GL_MAP_READ_BIT*/ | 0x20/*GL_MAP_UNSYNCHRONIZED_BIT*/)) != 0) {
+-      err("glMapBufferRange access does not support MAP_READ or MAP_UNSYNCHRONIZED");
++      warnOnce("glMapBufferRange access does not support MAP_READ or MAP_UNSYNCHRONIZED");
+       return 0;
+     }
