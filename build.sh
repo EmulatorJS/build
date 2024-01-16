@@ -9,6 +9,7 @@ compileProject() {
     makefilePath=$3
     makefileName=$4
     threads=$5
+    legacy=$6
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
@@ -21,10 +22,19 @@ compileProject() {
     git submodule update --recursive
     cd "$makefilePath"
     emmake make clean
+    rm -f *.bc
     if [ "$threads" = "yes" ] ; then
-        emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 || exit 1
+        if [ "$legacy" = "yes" ]; then
+            emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 EMULATORJS_LEGACY=1 || exit 1
+        else
+            emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 || exit 1
+        fi
     else
-        emmake make -j$(nproc) -f "$makefileName" platform=emscripten || exit 1
+        if [ "$legacy" = "yes" ]; then
+            emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_LEGACY=1 || exit 1
+        else
+            emmake make -j$(nproc) -f "$makefileName" platform=emscripten || exit 1
+        fi
     fi
     linkerfilename=( *.bc )
     rm -f "$initialPath/$outPath/$linkerfilename"
@@ -90,13 +100,12 @@ compileProject "vice" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Ma
 
 cd "RetroArch/dist-scripts"
 
-emmake ./dist-cores.sh emscripten clean no
+emmake ./dist-cores.sh emscripten clean no no
 
 rm -f *.bc
 cd "$initialPath"
 
 #now we can build the threaded cores
-
 compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro" "yes"
 compileProject "mgba" "https://github.com/EmulatorJS/mgba.git" "./" "Makefile.libretro" "yes"
 compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile" "yes"
@@ -108,6 +117,25 @@ compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "
 
 cd "RetroArch/dist-scripts"
 
-emmake ./dist-cores.sh emscripten clean yes
+emmake ./dist-cores.sh emscripten clean yes no
+
+rm -f *.bc
+cd "$initialPath"
+
+#Legacy cores
+compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile" "no" "yes"
+compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile" "no" "yes"
+
+cd "RetroArch/dist-scripts"
+emmake ./dist-cores.sh emscripten clean no yes
+rm -f *.bc
+cd "$initialPath"
+
+#Threaded Legacy cores
+compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile" "yes" "yes"
+compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile" "yes" "yes"
+
+cd "RetroArch/dist-scripts"
+emmake ./dist-cores.sh emscripten clean yes yes
 
 cd "$initialPath"
