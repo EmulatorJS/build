@@ -2,7 +2,7 @@
 
 initialPath="$PWD"
 outPath="RetroArch/dist-scripts"
-tempPath="RetroArch/dist-script/core-temp"
+tempPath="RetroArch/dist-scripts/core-temp"
 
 build() {
     rm -f *.bc
@@ -58,7 +58,7 @@ compileProject() {
     downloadLink=$2
     makefilePath=$3
     makefileName=$4
-    nolegacy="$5"
+    legacy="$5"
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
@@ -73,7 +73,7 @@ compileProject() {
 
     build
     buildThreads
-    if [ $nolegacy != "no" ]; then
+    if [ "$legacy" != "no" ]; then
         buildLegacy
         buildThreadsLegacy
     fi
