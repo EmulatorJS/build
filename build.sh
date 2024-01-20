@@ -105,7 +105,7 @@ compileProject "fbalpha2012_cps2" "https://github.com/EmulatorJS/fbalpha2012_cps
 compileProject "prosystem" "https://github.com/EmulatorJS/prosystem-libretro.git" "./" "Makefile"
 compileProject "stella2014" "https://github.com/EmulatorJS/stella2014-libretro.git" "./" "Makefile"
 compileProject "opera" "https://github.com/EmulatorJS/opera-libretro.git" "./" "Makefile"
-compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro"
+compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro" "no"
 compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
 compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
 compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
