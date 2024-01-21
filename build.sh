@@ -58,7 +58,8 @@ compileProject() {
     downloadLink=$2
     makefilePath=$3
     makefileName=$4
-    legacy="$5"
+    legacy=$5
+    thread=$6
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
@@ -72,10 +73,14 @@ compileProject() {
     cd "$makefilePath"
 
     build
-    buildThreads
+    if [ "$thread" != "no" ]; then
+        buildThreads
+    fi
     if [ "$legacy" != "no" ]; then
         buildLegacy
-        buildThreadsLegacy
+        if [ "$thread" != "no" ]; then
+             buildThreadsLegacy
+        fi
     fi
 
     cd "$initialPath"
@@ -105,7 +110,7 @@ compileProject "fbalpha2012_cps2" "https://github.com/EmulatorJS/fbalpha2012_cps
 compileProject "prosystem" "https://github.com/EmulatorJS/prosystem-libretro.git" "./" "Makefile"
 compileProject "stella2014" "https://github.com/EmulatorJS/stella2014-libretro.git" "./" "Makefile"
 compileProject "opera" "https://github.com/EmulatorJS/opera-libretro.git" "./" "Makefile"
-compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro" "no"
+compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro" "yes" "no"
 compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
 compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
 compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
