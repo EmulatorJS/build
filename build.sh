@@ -7,28 +7,28 @@ tempPath="RetroArch/dist-scripts/core-temp"
 build() {
     rm -f *.bc
     emmake make clean
-    emmake make -j$(nproc) -f "$makefileName" platform=emscripten || exit 1
+    emmake make -j$(nproc) -f "$makefileName" platform=emscripten $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/normal/"
 }
 buildThreads() {
     rm -f *.bc
     emmake make clean
-    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 || exit 1
+    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/threads/"
 }
 buildLegacy() {
     rm -f *.bc
     emmake make clean
-    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_LEGACY=1 || exit 1
+    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/legacy/"
 }
 buildThreadsLegacy() {
     rm -f *.bc
     emmake make clean
-    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 EMULATORJS_LEGACY=1 || exit 1
+    emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/legacyThreads/"
 }
@@ -58,8 +58,9 @@ compileProject() {
     downloadLink=$2
     makefilePath=$3
     makefileName=$4
-    legacy=$5
-    thread=$6
+    makefileArg=$5
+    legacy=$6
+    thread=$7
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
@@ -110,14 +111,14 @@ compileProject "fbalpha2012_cps2" "https://github.com/EmulatorJS/fbalpha2012_cps
 compileProject "prosystem" "https://github.com/EmulatorJS/prosystem-libretro.git" "./" "Makefile"
 compileProject "stella2014" "https://github.com/EmulatorJS/stella2014-libretro.git" "./" "Makefile"
 compileProject "opera" "https://github.com/EmulatorJS/opera-libretro.git" "./" "Makefile"
-compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro" "yes" "no"
+compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro" "" "yes" "no"
 compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
 compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
 compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
 compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro"
 compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "Makefile.libretro"
 compileProject "fbneo" "https://github.com/EmulatorJS/FBNeo.git" "./src/burner/libretro" "Makefile"
-compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile" "no"
+compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile" "" "no"
 compileProject "beetle-pce" "https://github.com/EmulatorJS/beetle-pce-libretro.git" "./" "Makefile"
 compileProject "beetle-pcfx" "https://github.com/EmulatorJS/beetle-pcfx-libretro.git" "./" "Makefile"
 compileProject "beetle-ngp" "https://github.com/EmulatorJS/beetle-ngp-libretro.git" "./" "Makefile"
@@ -125,9 +126,13 @@ compileProject "beetle-wswan" "https://github.com/EmulatorJS/beetle-wswan-libret
 compileProject "gearcoleco" "https://github.com/EmulatorJS/Gearcoleco.git" "./platforms/libretro/" "Makefile"
 compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile"
 compileProject "mame2003-plus" "https://github.com/EmulatorJS/mame2003-plus-libretro.git" "./" "Makefile"
-compileProject "puae" "https://github.com/EmulatorJS/libretro-uae.git" "./" "Makefile" "yes" "no"
-compileProject "vice" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile"
-
+compileProject "puae" "https://github.com/EmulatorJS/libretro-uae.git" "./" "Makefile" "" "yes" "no"
+compileProject "vice_x64" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x64"
+compileProject "vice_x64sc" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x64sc"
+compileProject "vice_x128" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x128"
+compileProject "vice_xpet" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xpet"
+compileProject "vice_xplus4" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xplus4"
+compileProject "vice_xvic" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xvic"
 
 cd "RetroArch/dist-scripts"
 
