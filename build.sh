@@ -6,28 +6,28 @@ tempPath="RetroArch/dist-scripts/core-temp"
 
 build() {
     rm -f *.bc
-    emmake make clean
+    emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/normal/"
 }
 buildThreads() {
     rm -f *.bc
-    emmake make clean
+    emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/threads/"
 }
 buildLegacy() {
     rm -f *.bc
-    emmake make clean
+    emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/legacy/"
 }
 buildThreadsLegacy() {
     rm -f *.bc
-    emmake make clean
+    emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
     mv $linkerfilename "$initialPath/$tempPath/legacyThreads/"
