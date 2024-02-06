@@ -36,9 +36,6 @@ buildThreadsLegacy() {
 if [ ! -d "RetroArch" ]; then
     git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
 fi
-cd RetroArch
-git pull
-cd ../
 
 cd "$outPath"
 rm -f *.bc
@@ -134,7 +131,9 @@ compileProject "vice_xpet" "https://github.com/EmulatorJS/vice-libretro.git" "./
 compileProject "vice_xplus4" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xplus4"
 compileProject "vice_xvic" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xvic"
 
-cd "RetroArch/dist-scripts"
+cd "RetroArch"
+git pull
+cd "dist-scripts"
 
 mv core-temp/normal/*.bc ./
 emmake ./dist-cores.sh emscripten clean no no
