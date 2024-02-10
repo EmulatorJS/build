@@ -1,6 +1,7 @@
 #!/bin/bash
 
 initialPath="$PWD"
+buildPath="$PWD/compile"
 outPath="RetroArch/dist-scripts"
 tempPath="RetroArch/dist-scripts/core-temp"
 
@@ -9,37 +10,42 @@ build() {
     emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten $makefileArg || exit 1
     linkerfilename=( *.bc )
-    mv $linkerfilename "$initialPath/$tempPath/normal/"
+    mv $linkerfilename "$buildPath/$tempPath/normal/"
 }
 buildThreads() {
     rm -f *.bc
     emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
-    mv $linkerfilename "$initialPath/$tempPath/threads/"
+    mv $linkerfilename "$buildPath/$tempPath/threads/"
 }
 buildLegacy() {
     rm -f *.bc
     emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
-    mv $linkerfilename "$initialPath/$tempPath/legacy/"
+    mv $linkerfilename "$buildPath/$tempPath/legacy/"
 }
 buildThreadsLegacy() {
     rm -f *.bc
     emmake make -f "$makefileName" clean
     emmake make -j$(nproc) -f "$makefileName" platform=emscripten EMULATORJS_THREADS=1 EMULATORJS_LEGACY=1 $makefileArg || exit 1
     linkerfilename=( *.bc )
-    mv $linkerfilename "$initialPath/$tempPath/legacyThreads/"
+    mv $linkerfilename "$buildPath/$tempPath/legacyThreads/"
 }
 
+# create compile directory
+mkdir -p $buildPath
+cd $buildPath
+
+# start pulling sources and compile
 if [ ! -d "RetroArch" ]; then
     git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
 fi
 
 cd "$outPath"
 rm -f *.bc
-cd "$initialPath"
+cd "$buildPath"
 
 rm -fr $tempPath
 mkdir -p $tempPath/
@@ -48,7 +54,7 @@ mkdir -p normal/
 mkdir -p threads/
 mkdir -p legacy/
 mkdir -p legacyThreads/
-cd $initialPath
+cd $buildPath
 
 compileProject() {
     name=$1
@@ -81,7 +87,7 @@ compileProject() {
         fi
     fi
 
-    cd "$initialPath"
+    cd "$buildPath"
 }
 
 if [ ! -d "EmulatorJS" ]; then
@@ -130,6 +136,7 @@ compileProject "vice_x128" "https://github.com/EmulatorJS/vice-libretro.git" "./
 compileProject "vice_xpet" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xpet"
 compileProject "vice_xplus4" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xplus4"
 compileProject "vice_xvic" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xvic"
+# compileProject "smsplus-gx" "https://github.com/libretro/smsplus-gx.git" "./" "Makefile"
 
 cd "RetroArch"
 git pull
