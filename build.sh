@@ -136,7 +136,7 @@ compileProject "vice_x128" "https://github.com/EmulatorJS/vice-libretro.git" "./
 compileProject "vice_xpet" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xpet"
 compileProject "vice_xplus4" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xplus4"
 compileProject "vice_xvic" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xvic"
-# compileProject "smsplus-gx" "https://github.com/libretro/smsplus-gx.git" "./" "Makefile"
+compileProject "smsplus-gx" "https://github.com/libretro/smsplus-gx.git" "./" "Makefile.libretro"
 
 cd "RetroArch"
 git pull
