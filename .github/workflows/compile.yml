@@ -22,13 +22,13 @@ jobs:
         run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
 
       - name: Zip files
-        run: "zip -r 'EmulatorJS Cores.zip' EmulatorJS/data/cores/*.data"
+        run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data"
 
       - name: Generate checksums
         uses: jmgilman/actions-generate-checksum@v1
         with:
           patterns: |
-            EmulatorJS/data/cores/*.data
+            ./compile/EmulatorJS/data/cores/*.data
 
       - name: Get Version
         id: version
@@ -40,6 +40,6 @@ jobs:
           VERSION: ${{ steps.version.outputs.VERSION }}
         run: |
           gh release create "v$VERSION" --title "Latest Version v$VERSION" --generate-notes
-          gh release upload "v$VERSION" EmulatorJS/data/cores/*.data
+          gh release upload "v$VERSION" ./compile/EmulatorJS/data/cores/*.data
           gh release upload "v$VERSION" "EmulatorJS Cores.zip"
           gh release upload "v$VERSION" "checksum.txt#checksum-256.txt"
