@@ -97,46 +97,26 @@ cd EmulatorJS
 git pull
 cd ../
 
-compileProject "libretro-fceumm" "https://github.com/EmulatorJS/libretro-fceumm.git" "./" "Makefile.libretro"
-compileProject "nestopia" "https://github.com/EmulatorJS/nestopia.git" "./libretro" "Makefile"
-compileProject "snes9x" "https://github.com/EmulatorJS/snes9x.git" "./libretro" "Makefile"
-compileProject "gambatte-libretro" "https://github.com/EmulatorJS/gambatte-libretro.git" "./" "Makefile.libretro"
-compileProject "mgba" "https://github.com/EmulatorJS/mgba.git" "./" "Makefile.libretro"
-compileProject "beetle-vb-libretro" "https://github.com/EmulatorJS/beetle-vb-libretro.git" "./" "Makefile"
-compileProject "mupen64plus-libretro-nx" "https://github.com/EmulatorJS/mupen64plus-libretro-nx.git" "./" "Makefile"
-compileProject "melonDS" "https://github.com/EmulatorJS/melonDS.git" "./" "Makefile"
-compileProject "desmume2015" "https://github.com/EmulatorJS/desmume2015.git" "./desmume" "Makefile.libretro"
-compileProject "desmume" "https://github.com/EmulatorJS/desmume.git" "./desmume/src/frontend/libretro" "Makefile.libretro"
-compileProject "a5200" "https://github.com/EmulatorJS/a5200.git" "./" "Makefile"
-compileProject "mame2003-libretro" "https://github.com/EmulatorJS/mame2003-libretro.git" "./" "Makefile"
-compileProject "fbalpha2012_cps1" "https://github.com/EmulatorJS/fbalpha2012_cps1.git" "./" "makefile.libretro"
-compileProject "fbalpha2012_cps2" "https://github.com/EmulatorJS/fbalpha2012_cps2.git" "./" "makefile.libretro"
-compileProject "prosystem" "https://github.com/EmulatorJS/prosystem-libretro.git" "./" "Makefile"
-compileProject "stella2014" "https://github.com/EmulatorJS/stella2014-libretro.git" "./" "Makefile"
-compileProject "opera" "https://github.com/EmulatorJS/opera-libretro.git" "./" "Makefile"
-compileProject "genesis-plus-GX" "https://github.com/EmulatorJS/Genesis-Plus-GX.git" "./" "Makefile.libretro"
-compileProject "yabause" "https://github.com/EmulatorJS/yabause.git" "./yabause/src/libretro" "Makefile"
-compileProject "handy" "https://github.com/EmulatorJS/libretro-handy.git" "./" "Makefile"
-compileProject "virtualjaguar" "https://github.com/EmulatorJS/virtualjaguar-libretro.git" "./" "Makefile"
-compileProject "pcsx_rearmed" "https://github.com/EmulatorJS/pcsx_rearmed.git" "./" "Makefile.libretro"
-compileProject "picodrive" "https://github.com/EmulatorJS/picodrive.git" "./" "Makefile.libretro"
-compileProject "fbneo" "https://github.com/EmulatorJS/FBNeo.git" "./src/burner/libretro" "Makefile"
-compileProject "beetle-psx" "https://github.com/EmulatorJS/beetle-psx-libretro.git" "./" "Makefile"
-compileProject "beetle-pce" "https://github.com/EmulatorJS/beetle-pce-libretro.git" "./" "Makefile"
-compileProject "beetle-pcfx" "https://github.com/EmulatorJS/beetle-pcfx-libretro.git" "./" "Makefile"
-compileProject "beetle-ngp" "https://github.com/EmulatorJS/beetle-ngp-libretro.git" "./" "Makefile"
-compileProject "beetle-wswan" "https://github.com/EmulatorJS/beetle-wswan-libretro.git" "./" "Makefile"
-compileProject "gearcoleco" "https://github.com/EmulatorJS/Gearcoleco.git" "./platforms/libretro/" "Makefile"
-compileProject "parallel-n64" "https://github.com/EmulatorJS/parallel-n64.git" "./" "Makefile"
-compileProject "mame2003-plus" "https://github.com/EmulatorJS/mame2003-plus-libretro.git" "./" "Makefile"
-compileProject "puae" "https://github.com/EmulatorJS/libretro-uae.git" "./" "Makefile"
-compileProject "vice_x64" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x64"
-compileProject "vice_x64sc" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x64sc"
-compileProject "vice_x128" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=x128"
-compileProject "vice_xpet" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xpet"
-compileProject "vice_xplus4" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xplus4"
-compileProject "vice_xvic" "https://github.com/EmulatorJS/vice-libretro.git" "./" "Makefile" "EMUTYPE=xvic"
-compileProject "smsplus-gx" "https://github.com/EmulatorJS/smsplus-gx" "./" "Makefile.libretro"
+for row in $(jq -r '.[] | @base64' ../cores.json); do
+    _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+    }
+
+    name=`echo $(_jq '.') | jq -r '.name'`
+    repo=`echo $(_jq '.') | jq -r '.repo'`
+    buildpath=`echo $(_jq '.') | jq -r '.makeoptions.buildpath'`
+    makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
+    arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
+
+    argumentstring=""
+    for rowarg in $(echo "${arguments}"); do
+        argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
+    done
+
+    echo "Starting compile of core $name"
+
+    compileProject "$name" "$repo.git" "$buildpath" "$makescript" "$argumentstring"
+done
 
 cd "RetroArch"
 git pull
