@@ -1,0 +1,466 @@
+[
+    {
+        "name": "mame2003-libretro",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {
+            "file": "MAME 2003 (0.78)/MAME 2003 (0.78).opt",
+            "settings": {
+                "mame2003_skip_disclaimer": "enabled",
+                "mame2003_skip_warnings": "enabled"
+            }
+        },
+        "license": "https://github.com/EmulatorJS/mame2003-libretro/blob/master/LICENSE.md",
+        "repo": "https://github.com/EmulatorJS/mame2003-libretro"
+    },
+    {
+        "name": "vice_x64",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=x64",
+                "SECONDARG=Poo"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "vice_x64sc",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=x64sc"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "vice_x128",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=x128"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "vice_xpet",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=xpet"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "vice_xplus4",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=xplus4"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "vice_xvic",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": [
+                "EMUTYPE=xvic"
+            ]
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/vice-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/vice-libretro"
+    },
+    {
+        "name": "libretro-fceumm",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile.libretro",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/libretro-fceumm/blob/master/Copying",
+        "repo": "https://github.com/EmulatorJS/libretro-fceumm"
+    },
+    {
+        "name": "nestopia",
+        "makeoptions": {
+            "buildpath": "./libretro",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/nestopia/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/nestopia"
+    },
+    {
+        "name": "snes9x",
+        "makeoptions": {
+            "buildpath": "./libretro",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/snes9x/blob/master/LICENSE",
+        "repo": "https://github.com/EmulatorJS/snes9x"
+    },
+    {
+        "name": "gambatte-libretro",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile.libretro",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/gambatte-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/gambatte-libretro"
+    },
+    {
+        "name": "mgba",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile.libretro",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/mgba/blob/master/LICENSE",
+        "repo": "https://github.com/EmulatorJS/mgba"
+    },
+    {
+        "name": "beetle-vb-libretro",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/beetle-vb-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-vb-libretro"
+    },
+    {
+        "name": "mupen64plus-libretro-nx",
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/mupen64plus-libretro-nx/blob/master/LICENSE",
+        "repo": "https://github.com/EmulatorJS/mupen64plus-libretro-nx"
+    },
+    {
+        "name": "meonDS",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/melonDS/blob/master/LICENSE",
+        "repo": "https://github.com/EmulatorJS/melonDS"
+    },
+    {
+        "name": "desmume2015",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./desmume",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/desmume2015"
+    },
+    {
+        "name": "desmume",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./desmume/src/frontend/libretro",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/desmume"
+    },
+    {
+        "name": "a5200",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/a5200/blob/master/License.txt",
+        "repo": "https://github.com/EmulatorJS/a5200"
+    },
+    {
+        "name": "fbalpha2012_cps1",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "makefile.libretro"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/fbalpha2012_cps1"
+    },
+    {
+        "name": "fbalpha2012_cps2",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "makefile.libretro"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/fbalpha2012_cps2"
+    },
+    {
+        "name": "prosystem",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/prosystem-libretro/blob/master/License.txt",
+        "repo": "https://github.com/EmulatorJS/prosystem-libretro"
+    },
+    {
+        "name": "stella2014",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/stella2014-libretro"
+    },
+    {
+        "name": "opera",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/opera-libretro"
+    },
+    {
+        "name": "genesis-plus-GX",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/Genesis-Plus-GX/blob/master/LICENSE.txt",
+        "repo": "https://github.com/EmulatorJS/Genesis-Plus-GX"
+    },
+    {
+        "name": "yabause",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./yabause/src/libretro",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/yabause"
+    },
+    {
+        "name": "handy",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/libretro-handy"
+    },
+    {
+        "name": "virtualjaguar",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/virtualjaguar-libretro"
+    },
+    {
+        "name": "pcsx_rearmed",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/pcsx_rearmed/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/pcsx_rearmed"
+    },
+    {
+        "name": "picodrive",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/picodrive/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/picodrive"
+    },
+    {
+        "name": "fbneo",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./src/burner/libretro",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/finalburnneo/FBNeo/blob/master/src/license.txt",
+        "repo": "https://github.com/EmulatorJS/FBNeo"
+    },
+    {
+        "name": "beetle-psx",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/beetle-psx-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-psx-libretro"
+    },
+    {
+        "name": "beetle-pce",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {
+            "file": "Beetle PSX HW/Beetle PSX HW.opt",
+            "settings": {
+                "beetle_psx_hw_renderer": "software"
+            }
+        },
+        "license": "https://github.com/EmulatorJS/beetle-pce-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-pce-libretro"
+    },
+    {
+        "name": "beetle-pcfx",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/beetle-pcfx-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-pcfx-libretro"
+    },
+    {
+        "name": "beetle-ngp",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/beetle-ngp-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-ngp-libretro"
+    },
+    {
+        "name": "beetle-wswan",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/beetle-wswan-libretro/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/beetle-wswan-libretro"
+    },
+    {
+        "name": "gearcoleco",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./platforms/libretro/",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/Gearcoleco/blob/master/LICENSE",
+        "repo": "https://github.com/EmulatorJS/Gearcoleco"
+    },
+    {
+        "name": "parallel-n64",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/parallel-n64"
+    },
+    {
+        "name": "mame2003-plus",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/mame2003-plus-libretro/blob/master/LICENSE.md",
+        "repo": "https://github.com/EmulatorJS/mame2003-plus-libretro"
+    },
+    {
+        "name": "puae",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile"
+        },
+        "options": {},
+        "license": "https://github.com/EmulatorJS/libretro-uae/blob/master/COPYING",
+        "repo": "https://github.com/EmulatorJS/libretro-uae"
+    },
+    {
+        "name": "smsplus-gx",
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "license": "",
+        "repo": "https://github.com/EmulatorJS/smsplus-gx"
+    }
+]
