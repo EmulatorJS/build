@@ -104,6 +104,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
     name=`echo $(_jq '.') | jq -r '.name'`
     repo=`echo $(_jq '.') | jq -r '.repo'`
+    license=`echo $(_jq '.') | jq -r '.license'`
     buildpath=`echo $(_jq '.') | jq -r '.makeoptions.buildpath'`
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
@@ -116,6 +117,11 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     echo "Starting compile of core $name"
 
     compileProject "$name" "$repo.git" "$buildpath" "$makescript" "$argumentstring"
+
+    if [ ! -z "$license" -a "$license" != " " ]; then
+        # license url is provided - download it
+        wget "$license?raw=true" -O "./$name-License.txt"
+    fi
 done
 
 cd "RetroArch"

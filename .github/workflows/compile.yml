@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Install Dependencies
-        run: sudo apt install -y p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq
+        run: sudo apt install -y p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl
 
       - name: Setup Emscripten
         run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
@@ -25,6 +25,7 @@ jobs:
         run: |
           "cp ./build.json ./compile/EmulatorJS/data/cores/"
           "cp ./cores.json ./compile/EmulatorJS/data/cores/"
+          "cp ./compile/*-License.txt ./compile/EmulatorJS/data/cores/"
 
       - name: Zip files
         run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data ./compile/EmulatorJS/data/cores/*.json"
