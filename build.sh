@@ -143,19 +143,19 @@ git pull
 cd "dist-scripts"
 
 mv core-temp/normal/*.bc ./
-emmake ./dist-cores.sh emscripten clean no no
+emmake ./build-emulatorjs.sh emscripten clean no no
 rm -f *.bc
 
 mv core-temp/threads/*.bc ./
-emmake ./dist-cores.sh emscripten clean yes no
+emmake ./build-emulatorjs.sh emscripten clean yes no
 rm -f *.bc
 
 mv core-temp/legacy/*.bc ./
-emmake ./dist-cores.sh emscripten clean no yes
+emmake ./build-emulatorjs.sh emscripten clean no yes
 rm -f *.bc
 
 mv core-temp/legacyThreads/*.bc ./
-emmake ./dist-cores.sh emscripten clean yes yes
+emmake ./build-emulatorjs.sh emscripten clean yes yes
 rm -f *.bc
 
 cd "$initialPath"
