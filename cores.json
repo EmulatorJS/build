@@ -22,8 +22,7 @@
             "buildpath": "./",
             "makescript": "Makefile",
             "arguments": [
-                "EMUTYPE=x64",
-                "SECONDARG=Poo"
+                "EMUTYPE=x64"
             ]
         },
         "options": {},
