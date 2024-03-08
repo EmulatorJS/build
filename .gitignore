@@ -7,3 +7,5 @@
 !/emscripten.patch
 !/.github
 !/.github/workflows/compile.yml
+!/build.json
+!/cores.json
