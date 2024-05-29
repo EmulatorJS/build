@@ -91,7 +91,7 @@ compileProject() {
 }
 
 if [ ! -d "EmulatorJS" ]; then
-    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" || exit 1
+    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" --depth 1 || exit 1
 fi
 cd EmulatorJS
 git pull
