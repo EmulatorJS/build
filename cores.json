@@ -914,7 +914,7 @@
         "repo": "https://github.com/EmulatorJS/libretro-uae"
     },
     {
-        "name": "smsplus-gx",
+        "name": "smsplus",
         "extensions": [
             "m3u",
             "mdx",
