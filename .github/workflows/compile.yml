@@ -21,14 +21,8 @@ jobs:
       - name: Build Cores
         run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
 
-      - name: Copy Support Files
-        run: |
-          "cp ./build.json ./compile/EmulatorJS/data/cores/"
-          "cp ./cores.json ./compile/EmulatorJS/data/cores/"
-          "cp ./compile/*-License.txt ./compile/EmulatorJS/data/cores/"
-
       - name: Zip files
-        run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data ./compile/EmulatorJS/data/cores/*.json"
+        run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data"
 
       - name: Generate checksums
         uses: jmgilman/actions-generate-checksum@v1

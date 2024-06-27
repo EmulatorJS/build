@@ -91,13 +91,16 @@ compileProject() {
 }
 
 if [ ! -d "EmulatorJS" ]; then
-    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" || exit 1
+    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" --depth 1 || exit 1
 fi
 cd EmulatorJS
 git pull
 cd ../
 
+compileStartPath="$PWD"
 for row in $(jq -r '.[] | @base64' ../cores.json); do
+    cd $compileStartPath
+
     _jq() {
         echo ${row} | base64 --decode | jq -r ${1}
     }
@@ -115,33 +118,61 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     done
 
     echo "Starting compile of core $name"
+    echo "Working dir $PWD"
 
     compileProject "$name" "$repo.git" "$buildpath" "$makescript" "$argumentstring"
 
+    # write JSON stanza for this core to disk
+    echo ${row} | base64 --decode > "./core.json"
+
     if [ ! -z "$license" -a "$license" != " " ]; then
-        # license url is provided - download it
-        wget "$license?raw=true" -O "./$name-License.txt"
+        # license file is provided - copy it
+        echo "License file: $name/$license"
+        cp $name/$license "./license.txt"
     fi
+
+    echo "Build wasm's for core $name"
+    cd "RetroArch"
+    git pull
+    cd "dist-scripts"
+
+    mv core-temp/normal/*.bc ./
+    emmake ./build-emulatorjs.sh emscripten clean no no
+    rm -f *.bc
+
+    mv core-temp/threads/*.bc ./
+    emmake ./build-emulatorjs.sh emscripten clean yes no
+    rm -f *.bc
+
+    mv core-temp/legacy/*.bc ./
+    emmake ./build-emulatorjs.sh emscripten clean no yes
+    rm -f *.bc
+
+    mv core-temp/legacyThreads/*.bc ./
+    emmake ./build-emulatorjs.sh emscripten clean yes yes
+    rm -f *.bc
+
+    echo "Add support files to $name wasms"
+    cd $compileStartPath
+    if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
+        7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
+    fi
+
+    if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
+        7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
+    fi
+
+    if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
+        7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
+    fi
+
+    if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
+        7z a -t7z EmulatorJS/data/cores/$name-thread-legacy-wasm.data ./core.json ./license.txt ../build.json
+    fi
+
+    # clean up
+    rm ./license.txt
+    rm core.json
 done
-
-cd "RetroArch"
-git pull
-cd "dist-scripts"
-
-mv core-temp/normal/*.bc ./
-emmake ./dist-cores.sh emscripten clean no no
-rm -f *.bc
-
-mv core-temp/threads/*.bc ./
-emmake ./dist-cores.sh emscripten clean yes no
-rm -f *.bc
-
-mv core-temp/legacy/*.bc ./
-emmake ./dist-cores.sh emscripten clean no yes
-rm -f *.bc
-
-mv core-temp/legacyThreads/*.bc ./
-emmake ./dist-cores.sh emscripten clean yes yes
-rm -f *.bc
 
 cd "$initialPath"
