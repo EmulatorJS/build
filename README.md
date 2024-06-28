@@ -3,7 +3,7 @@ A simple script that will download and build the emulatorjs core files
 
 This script will download and build most of the available retroarch cores.
 
-**Warning**: Some cores do not compile on ARM based systems (such as M series MacBooks and Raspberry Pi). Use only amd64 based systems to compile.
+> **Warning**: Some cores do not compile on ARM based systems (such as M series MacBooks and Raspberry Pi). Use only amd64 based systems to compile.
 
 # Set up your build environment
 
@@ -18,13 +18,14 @@ To set up the build environment on an Ubuntu/Debian system, run the enclosed ``b
 # Compiling
 Execute the command ``source ./.emsdk/emsdk_env.sh && bash build.sh`` in the repo root to begin compiling.
 
-Compiled assets will be in the ``./compile`` directory.
+Compilation will be performed in ``./compile``, and the completed assets will be copied to ``./output``, with logs in ``./output/logs``.
 
 # Adding new cores
 To add a new core, add a stanza like the below:
 ```json
 {
-    "name": "mame2003-libretro",
+    "name": "mame2003",
+    "extensions": [ "zip" ],
     "makeoptions": {
         "buildpath": "./",
         "makescript": "Makefile",
@@ -37,15 +38,16 @@ To add a new core, add a stanza like the below:
             "mame2003_skip_warnings": "enabled"
         }
     },
-    "license": "https://github.com/EmulatorJS/mame2003-libretro/blob/master/LICENSE.md",
+    "license": "LICENSE.md",
     "repo": "https://github.com/EmulatorJS/mame2003-libretro"
 }
 ```
 
 | Attribute | Definition |
 | --------- | ---------- |
-| ``name``      | The name of the core - usually the core project name |
-| ``license``   | A link to the projects license file |
+| ``name``      | The name of the core. This value should be the name of the compiled core .data file. |
+| ``extensions`` | An array of file extensions used by the core |
+| ``license``   | The path to the repo project license file. This path is relative to the root of the repo. |
 | ``repo``      | A link to the project repository |
 | ``makeoptions`` | Settings and options for building the core (see makeoptions table below) |
 | ``options``   | Options to be set by the emulator (see options table below) |
