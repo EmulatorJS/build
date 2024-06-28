@@ -1,9 +1,7 @@
 [
     {
         "name": "mame2003",
-        "extensions": [
-            "zip"
-        ],
+        "extensions": [ "zip" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -21,46 +19,7 @@
     },
     {
         "name": "vice_x64",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -74,46 +33,7 @@
     },
     {
         "name": "vice_x64sc",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -127,46 +47,7 @@
     },
     {
         "name": "vice_x128",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -180,46 +61,7 @@
     },
     {
         "name": "vice_xpet",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -233,46 +75,7 @@
     },
     {
         "name": "vice_xplus4",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -286,46 +89,7 @@
     },
     {
         "name": "vice_xvic",
-        "extensions": [
-            "d64",
-            "d6z",
-            "d71",
-            "d7z",
-            "d80",
-            "d81",
-            "d82",
-            "d8z",
-            "g64",
-            "g6z",
-            "g41",
-            "g4z",
-            "x64",
-            "x6z",
-            "nib",
-            "nbz",
-            "d2m",
-            "d4m",
-            "t64",
-            "tap",
-            "tcrt",
-            "prg",
-            "p00",
-            "crt",
-            "bin",
-            "cmd",
-            "m3u",
-            "vfl",
-            "vsf",
-            "zip",
-            "7z",
-            "gz",
-            "20",
-            "40",
-            "60",
-            "a0",
-            "b0",
-            "rom"
-        ],
+        "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -339,12 +103,7 @@
     },
     {
         "name": "fceumm",
-        "extensions": [
-            "fds",
-            "nes",
-            "unif",
-            "unf"
-        ],
+        "extensions": [ "fds", "nes", "unif", "unf" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile.libretro",
@@ -356,12 +115,7 @@
     },
     {
         "name": "nestopia",
-        "extensions": [
-            "fds",
-            "nes",
-            "unif",
-            "unf"
-        ],
+        "extensions": [ "fds", "nes", "unif", "unf" ],
         "makeoptions": {
             "buildpath": "./libretro",
             "makescript": "Makefile",
@@ -373,14 +127,7 @@
     },
     {
         "name": "snes9x",
-        "extensions": [
-            "smc",
-            "sfc",
-            "swc",
-            "fig",
-            "bs",
-            "st"
-        ],
+        "extensions": [ "smc", "sfc", "swc", "fig", "bs", "st" ],
         "makeoptions": {
             "buildpath": "./libretro",
             "makescript": "Makefile",
@@ -392,11 +139,7 @@
     },
     {
         "name": "gambatte",
-        "extensions": [
-            "gb",
-            "gbc",
-            "dmg"
-        ],
+        "extensions": [ "gb", "gbc", "dmg" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile.libretro",
@@ -408,11 +151,7 @@
     },
     {
         "name": "mgba",
-        "extensions": [
-            "gb",
-            "gbc",
-            "gba"
-        ],
+        "extensions": [ "gb", "gbc", "gba" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile.libretro",
@@ -424,11 +163,7 @@
     },
     {
         "name": "beetle_vb",
-        "extensions": [
-            "vb",
-            "vboy",
-            "bin"
-        ],
+        "extensions": [ "vb", "vboy", "bin" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -440,15 +175,7 @@
     },
     {
         "name": "mupen64plus_next",
-        "extensions": [
-            "n64",
-            "v64",
-            "z64",
-            "bin",
-            "u1",
-            "ndd",
-            "gb"
-        ],
+        "extensions": [ "n64", "v64", "z64", "bin", "u1", "ndd", "gb" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -460,9 +187,7 @@
     },
     {
         "name": "melonds",
-        "extensions": [
-            "nds"
-        ],
+        "extensions": [ "nds" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -474,10 +199,7 @@
     },
     {
         "name": "desmume2015",
-        "extensions": [
-            "nds",
-            "bin"
-        ],
+        "extensions": [ "nds", "bin" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./desmume",
@@ -489,10 +211,7 @@
     },
     {
         "name": "desmume",
-        "extensions": [
-            "nds",
-            "bin"
-        ],
+        "extensions": [ "nds", "bin" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./desmume/src/frontend/libretro",
@@ -504,10 +223,7 @@
     },
     {
         "name": "a5200",
-        "extensions": [
-            "a52",
-            "bin"
-        ],
+        "extensions": [ "a52", "bin" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -519,9 +235,7 @@
     },
     {
         "name": "fbalpha2012_cps1",
-        "extensions": [
-            "zip"
-        ],
+        "extensions": [ "zip" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -533,9 +247,7 @@
     },
     {
         "name": "fbalpha2012_cps2",
-        "extensions": [
-            "zip"
-        ],
+        "extensions": [ "zip" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -547,10 +259,7 @@
     },
     {
         "name": "prosystem",
-        "extensions": [
-            "a78",
-            "bin"
-        ],
+        "extensions": [ "a78", "bin" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -562,11 +271,7 @@
     },
     {
         "name": "stella2014",
-        "extensions": [
-            "a26",
-            "bin",
-            "zip"
-        ],
+        "extensions": [ "a26", "bin", "zip" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -578,12 +283,7 @@
     },
     {
         "name": "opera",
-        "extensions": [
-            "iso",
-            "bin",
-            "chd",
-            "cue"
-        ],
+        "extensions": [ "iso", "bin", "chd", "cue" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -595,23 +295,7 @@
     },
     {
         "name": "genesis_plus_gx",
-        "extensions": [
-            "m3u",
-            "mdx",
-            "md",
-            "smd",
-            "gen",
-            "bin",
-            "cue",
-            "iso",
-            "chd",
-            "bms",
-            "sms",
-            "gg",
-            "sg",
-            "68k",
-            "sgd"
-        ],
+        "extensions": [ "m3u", "mdx", "md", "smd", "gen", "bin", "cue", "iso", "chd", "bms", "sms", "gg", "sg", "68k", "sgd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -623,15 +307,7 @@
     },
     {
         "name": "yabause",
-        "extensions": [
-            "cue",
-            "iso",
-            "ccd",
-            "mds",
-            "chd",
-            "zip",
-            "m3u"
-        ],
+        "extensions": [ "cue", "iso", "ccd", "mds", "chd", "zip", "m3u"  ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./yabause/src/libretro",
@@ -643,9 +319,7 @@
     },
     {
         "name": "handy",
-        "extensions": [
-            "lnx"
-        ],
+        "extensions": [ "lnx" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -657,15 +331,7 @@
     },
     {
         "name": "virtualjaguar",
-        "extensions": [
-            "j64",
-            "jag",
-            "rom",
-            "abs",
-            "cof",
-            "bin",
-            "prg"
-        ],
+        "extensions": [ "j64", "jag", "rom", "abs", "cof", "bin", "prg" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -677,17 +343,7 @@
     },
     {
         "name": "pcsx_rearmed",
-        "extensions": [
-            "bin",
-            "cue",
-            "img",
-            "mdf",
-            "pbp",
-            "toc",
-            "cbn",
-            "m3u",
-            "ccd"
-        ],
+        "extensions": [ "bin", "cue", "img", "mdf", "pbp", "toc", "cbn", "m3u", "ccd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -699,18 +355,7 @@
     },
     {
         "name": "picodrive",
-        "extensions": [
-            "bin",
-            "gen",
-            "smd",
-            "md",
-            "32x",
-            "cue",
-            "iso",
-            "sms",
-            "68k",
-            "chd"
-        ],
+        "extensions": [ "bin", "gen", "smd", "md", "32x", "cue", "iso", "sms", "68k", "chd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -722,10 +367,7 @@
     },
     {
         "name": "fbneo",
-        "extensions": [
-            "zip",
-            "7z"
-        ],
+        "extensions": [ "zip", "7z" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./src/burner/libretro",
@@ -737,15 +379,7 @@
     },
     {
         "name": "mednafen_psx_hw",
-        "extensions": [
-            "cue",
-            "toc",
-            "m3u",
-            "ccd",
-            "exe",
-            "pbp",
-            "chd"
-        ],
+        "extensions": [ "cue", "toc", "m3u", "ccd", "exe", "pbp", "chd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -757,15 +391,7 @@
     },
     {
         "name": "mednafen_pce",
-        "extensions": [
-            "pce",
-            "cue",
-            "ccd",
-            "iso",
-            "img",
-            "bin",
-            "chd"
-        ],
+        "extensions": [ "pce", "cue", "ccd", "iso", "img", "bin", "chd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -782,12 +408,7 @@
     },
     {
         "name": "mednafen_pcfx",
-        "extensions": [
-            "cue",
-            "ccd",
-            "toc",
-            "chd"
-        ],
+        "extensions": [ "cue", "ccd", "toc", "chd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -799,10 +420,7 @@
     },
     {
         "name": "mednafen_ngp",
-        "extensions": [
-            "ngp",
-            "ngc"
-        ],
+        "extensions": [ "ngp", "ngc" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -814,11 +432,7 @@
     },
     {
         "name": "mednafen_wswan",
-        "extensions": [
-            "ws",
-            "wsc",
-            "pc2"
-        ],
+        "extensions": [ "ws", "wsc", "pc2" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -830,12 +444,7 @@
     },
     {
         "name": "gearcoleco",
-        "extensions": [
-            "col",
-            "cv",
-            "bin",
-            "rom"
-        ],
+        "extensions": [ "col", "cv", "bin", "rom" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./platforms/libretro/",
@@ -847,15 +456,7 @@
     },
     {
         "name": "parallel_n64",
-        "extensions": [
-            "n64",
-            "v64",
-            "z64",
-            "bin",
-            "u1",
-            "ndd",
-            "gb"
-        ],
+        "extensions": [ "n64", "v64", "z64", "bin", "u1", "ndd", "gb" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -867,9 +468,7 @@
     },
     {
         "name": "mame2003_plus",
-        "extensions": [
-            "zip"
-        ],
+        "extensions": [ "zip" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -881,29 +480,7 @@
     },
     {
         "name": "puae",
-        "extensions": [
-            "adf",
-            "adz",
-            "dms",
-            "fdi",
-            "ipf",
-            "raw",
-            "hdf",
-            "hdz",
-            "lha",
-            "slave",
-            "info",
-            "cue",
-            "ccd",
-            "chd",
-            "nrg",
-            "mds",
-            "iso",
-            "uae",
-            "m3u",
-            "zip",
-            "7z"
-        ],
+        "extensions": [ "adf", "adz", "dms", "fdi", "ipf", "raw", "hdf", "hdz", "lha", "slave", "info", "cue", "ccd", "chd", "nrg", "mds", "iso", "uae", "m3u", "zip", "7z" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -915,23 +492,7 @@
     },
     {
         "name": "smsplus",
-        "extensions": [
-            "m3u",
-            "mdx",
-            "md",
-            "smd",
-            "gen",
-            "bin",
-            "cue",
-            "iso",
-            "chd",
-            "bms",
-            "sms",
-            "gg",
-            "sg",
-            "68k",
-            "sgd"
-        ],
+        "extensions": [ "m3u", "mdx", "md", "smd", "gen", "bin", "cue", "iso", "chd", "bms", "sms", "gg", "sg", "68k", "sgd" ],
         "makeoptions": {
             "arguments": [],
             "buildpath": "./",
@@ -943,11 +504,7 @@
     },
     {
         "name": "81-libretro",
-        "extensions": [
-            "p",
-            "tzx",
-            "t81"
-        ],
+        "extensions": [ "p", "tzx", "t81" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile.libretro",
@@ -959,14 +516,7 @@
     },
     {
         "name": "fuse-libretro",
-        "extensions": [
-            "tzx",
-            "tap",
-            "z80",
-            "rzx",
-            "scl",
-            "trd"
-        ],
+        "extensions": [ "tzx", "tap", "z80", "rzx", "scl", "trd" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile.libretro",
@@ -978,16 +528,7 @@
     },
     {
         "name": "cap32",
-        "extensions": [
-            "dsk",
-            "sna",
-            "tap",
-            "cdt",
-            "voc",
-            "m3u",
-            "cpr",
-            "zip"
-        ],
+        "extensions": [ "dsk", "sna", "tap", "cdt", "voc", "m3u", "cpr", "zip" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
@@ -999,11 +540,7 @@
     },
     {
         "name": "crocods",
-        "extensions": [
-            "dsk",
-            "sna",
-            "kcr"
-        ],
+        "extensions": [ "dsk", "sna", "kcr" ],
         "makeoptions": {
             "buildpath": "./",
             "makescript": "Makefile",
