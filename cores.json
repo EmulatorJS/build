@@ -503,7 +503,7 @@
         "repo": "https://github.com/EmulatorJS/smsplus-gx"
     },
     {
-        "name": "81-libretro",
+        "name": "81",
         "extensions": [ "p", "tzx", "t81" ],
         "makeoptions": {
             "buildpath": "./",
@@ -515,7 +515,7 @@
         "repo": "https://github.com/libretro/81-libretro"
     },
     {
-        "name": "fuse-libretro",
+        "name": "fuse",
         "extensions": [ "tzx", "tap", "z80", "rzx", "scl", "trd" ],
         "makeoptions": {
             "buildpath": "./",
