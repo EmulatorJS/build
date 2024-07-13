@@ -65,11 +65,12 @@ cd $buildPath
 compileProject() {
     name=$1
     downloadLink=$2
-    makefilePath=$3
-    makefileName=$4
-    makefileArg=$5
-    legacy=$6
-    thread=$7
+    branch=$3
+    makefilePath=$4
+    makefileName=$5
+    makefileArg=$6
+    legacy=$7
+    thread=$8
 
     if [ ! -d "$name" ]; then
         git clone "$downloadLink" "$name"
@@ -78,6 +79,10 @@ compileProject() {
         cd ../
     fi
     cd "$name"
+    if [ $branch != 'null' ]; then
+        echo "Checking out branch $branch"
+        git checkout "$branch"
+    fi
     git pull
     git submodule update --recursive
     cd "$makefilePath"
@@ -113,6 +118,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
     name=`echo $(_jq '.') | jq -r '.name'`
     repo=`echo $(_jq '.') | jq -r '.repo'`
+    branch=`echo $(_jq '.') | jq -r '.branch'`
     license=`echo $(_jq '.') | jq -r '.license'`
     buildpath=`echo $(_jq '.') | jq -r '.makeoptions.buildpath'`
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
@@ -126,7 +132,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     echo "Starting compile of core $name"
     echo "Working dir $PWD"
 
-    compileProject "$name" "$repo.git" "$buildpath" "$makescript" "$argumentstring" >> "$logPath/$name-compile.log"
+    compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" >> "$logPath/$name-compile.log"
 
     # write JSON stanza for this core to disk
     echo ${row} | base64 --decode > "./core.json"
@@ -185,6 +191,6 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 done
 
 # delete all compile files
-rm -fR $buildPath
+#rm -fR $buildPath
 
 cd "$initialPath"
