@@ -36,10 +36,12 @@ To add a new core, add a stanza like the below:
         "settings": {
             "mame2003_skip_disclaimer": "enabled",
             "mame2003_skip_warnings": "enabled"
-        }
+        },
+        "defaultWebGL2": false
     },
     "license": "LICENSE.md",
-    "repo": "https://github.com/EmulatorJS/mame2003-libretro"
+    "repo": "https://github.com/EmulatorJS/mame2003-libretro",
+    "branch": "main"
 }
 ```
 
@@ -49,6 +51,7 @@ To add a new core, add a stanza like the below:
 | ``extensions`` | An array of file extensions used by the core |
 | ``license``   | The path to the repo project license file. This path is relative to the root of the repo. |
 | ``repo``      | A link to the project repository |
+| ``branch``    | The git branch to switch to when building |
 | ``makeoptions`` | Settings and options for building the core (see makeoptions table below) |
 | ``options``   | Options to be set by the emulator (see options table below) |
 
@@ -64,3 +67,4 @@ To add a new core, add a stanza like the below:
 | --------- | ---------- |
 | ``file``      | The relative path and file name for the core options file |
 | ``settings``  | A hash table of attributes and their values to write to the core options file |
+| ``defaultWebGL2`` | A boolean value of if WebGL2 should be defaulted to enabled |
