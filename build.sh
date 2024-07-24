@@ -43,6 +43,7 @@ cd $buildPath
 
 # create output path
 mkdir -p $outputPath
+mkdir -p $buildReport
 mkdir -p $logPath
 
 # start pulling sources and compile
