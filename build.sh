@@ -3,6 +3,7 @@
 initialPath="$PWD"
 buildPath="$PWD/compile"
 outputPath="$PWD/output"
+buildReport="$outputPath/reports"
 logPath="$outputPath/logs"
 outPath="RetroArch/dist-scripts"
 tempPath="RetroArch/dist-scripts/core-temp"
@@ -111,7 +112,7 @@ cd ../
 compileStartPath="$PWD"
 for row in $(jq -r '.[] | @base64' ../cores.json); do
     startTime=`date -u -Is`
-    
+
     cd $compileStartPath
 
     _jq() {
