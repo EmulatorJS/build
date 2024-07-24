@@ -110,6 +110,8 @@ cd ../
 
 compileStartPath="$PWD"
 for row in $(jq -r '.[] | @base64' ../cores.json); do
+    startTime=`date -u -Is`
+    
     cd $compileStartPath
 
     _jq() {
@@ -188,9 +190,19 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     # clean up to make sure the next build in the json gets the right license and core file
     rm ./license.txt
     rm ./core.json
+    
+    # write report to report file
+    endTime=`date -u -Is`
+    reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\" }"
+    buildReportFile="$buildReport/$name.json"
+    echo $reportString > $buildReportFile
 done
 
 # delete all compile files
-#rm -fR $buildPath
+if [[ -z "$DEPLOY_ENV" ]]; then
+    echo "Not deleting build path"
+else
+    rm -fR $buildPath
+fi
 
 cd "$initialPath"
