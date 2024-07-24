@@ -181,7 +181,9 @@
             "makescript": "Makefile",
             "arguments": []
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/mupen64plus-libretro-nx"
     },
@@ -193,7 +195,9 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/melonDS"
     },
@@ -205,7 +209,9 @@
             "buildpath": "./desmume",
             "makescript": "Makefile.libretro"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume2015"
     },
@@ -217,7 +223,9 @@
             "buildpath": "./desmume/src/frontend/libretro",
             "makescript": "Makefile.libretro"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume"
     },
@@ -349,7 +357,9 @@
             "buildpath": "./",
             "makescript": "Makefile.libretro"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/pcsx_rearmed"
     },
@@ -385,7 +395,9 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/beetle-psx-libretro"
     },
@@ -462,7 +474,9 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {},
+        "options": {
+            "defaultWebGL2": true
+        },
         "license": "",
         "repo": "https://github.com/EmulatorJS/parallel-n64"
     },
