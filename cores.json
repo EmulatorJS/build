@@ -474,9 +474,7 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {
-            "defaultWebGL2": true
-        },
+        "options": {},
         "license": "",
         "repo": "https://github.com/EmulatorJS/parallel-n64"
     },
