@@ -128,6 +128,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     buildpath=`echo $(_jq '.') | jq -r '.makeoptions.buildpath'`
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
+    options=`echo $(_jq '.') | jq -r '.options'`
 
     argumentstring=""
     for rowarg in $(echo "${arguments}"); do
@@ -196,7 +197,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     
     # write report to report file
     endTime=`date -u -Is`
-    reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\" }"
+    reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
     buildReportFile="$buildReport/$name.json"
     echo $reportString > $buildReportFile
 done
