@@ -202,7 +202,8 @@
             "makescript": "Makefile"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/melonDS"
@@ -216,7 +217,8 @@
             "makescript": "Makefile.libretro"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume2015"
@@ -230,7 +232,8 @@
             "makescript": "Makefile.libretro"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume"
