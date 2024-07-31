@@ -27,7 +27,9 @@
                 "EMUTYPE=x64"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -41,7 +43,9 @@
                 "EMUTYPE=x64sc"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -55,7 +59,9 @@
                 "EMUTYPE=x128"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -196,7 +202,8 @@
             "makescript": "Makefile"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/melonDS"
@@ -210,7 +217,8 @@
             "makescript": "Makefile.libretro"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume2015"
@@ -224,7 +232,8 @@
             "makescript": "Makefile.libretro"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "supportsMouse": true
         },
         "license": "",
         "repo": "https://github.com/EmulatorJS/desmume"
@@ -498,7 +507,9 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/libretro-uae"
     },
