@@ -13,7 +13,11 @@ This repo contains a devcontainer configuration.
 Using docker and VSCode, the repo can be started in a container, where all dependencies are installed for you.
 
 ## Local
-To set up the build environment on an Ubuntu/Debian system, run the enclosed ``build_env.sh`` script to install all required components. You may need to use sudo to run this script to install system components.
+This guide assumes you're using a Debian or Ubuntu type system.
+
+* Run ``sudo apt update && sudo apt install jq wget curl gpg p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip libsdl2-dev``
+
+* Run the enclosed ``build_env.sh`` script to configure the build environment. You may need to use sudo to run this script to install system components.
 
 # Compiling
 Execute the command ``source ./.emsdk/emsdk_env.sh && bash build.sh`` in the repo root to begin compiling.
