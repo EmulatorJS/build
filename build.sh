@@ -43,6 +43,7 @@ cd $buildPath
 
 # create output path
 mkdir -p $outputPath
+cp $initialPath/cores.json $outputPath
 mkdir -p $buildReport
 mkdir -p $logPath
 
