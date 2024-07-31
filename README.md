@@ -37,7 +37,8 @@ To add a new core, add a stanza like the below:
             "mame2003_skip_disclaimer": "enabled",
             "mame2003_skip_warnings": "enabled"
         },
-        "defaultWebGL2": false
+        "defaultWebGL2": false,
+        "supportsMouse": false
     },
     "license": "LICENSE.md",
     "repo": "https://github.com/EmulatorJS/mame2003-libretro",
@@ -68,3 +69,4 @@ To add a new core, add a stanza like the below:
 | ``file``      | The relative path and file name for the core options file |
 | ``settings``  | A hash table of attributes and their values to write to the core options file |
 | ``defaultWebGL2`` | A boolean value of if WebGL2 should be defaulted to enabled |
+| ``supportsMouse`` | A boolean value defining if the core supports a mouse |

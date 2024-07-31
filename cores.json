@@ -27,7 +27,9 @@
                 "EMUTYPE=x64"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -41,7 +43,9 @@
                 "EMUTYPE=x64sc"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -55,7 +59,9 @@
                 "EMUTYPE=x128"
             ]
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/vice-libretro"
     },
@@ -498,7 +504,9 @@
             "buildpath": "./",
             "makescript": "Makefile"
         },
-        "options": {},
+        "options": {
+            "supportsMouse": true
+        },
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/libretro-uae"
     },
