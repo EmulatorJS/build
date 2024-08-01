@@ -129,77 +129,83 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
     options=`echo $(_jq '.') | jq -r '.options'`
+    status=`echo $(_jq '.') | jq -r '.status'`
 
-    argumentstring=""
-    for rowarg in $(echo "${arguments}"); do
-        argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
-    done
+    # only compile if the status attribute is not 3
+    if [ -a "$status" != 3 ]; then
 
-    echo "Starting compile of core $name"
-    echo "Working dir $PWD"
+        argumentstring=""
+        for rowarg in $(echo "${arguments}"); do
+            argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
+        done
 
-    compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" >> "$logPath/$name-compile.log"
+        echo "Starting compile of core $name"
+        echo "Working dir $PWD"
 
-    # write JSON stanza for this core to disk
-    echo ${row} | base64 --decode > "./core.json"
+        compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" >> "$logPath/$name-compile.log"
 
-    if [ ! -z "$license" -a "$license" != " " ]; then
-        # license file is provided - copy it
-        echo "License file: $name/$license"
-        cp $name/$license "./license.txt"
+        # write JSON stanza for this core to disk
+        echo ${row} | base64 --decode > "./core.json"
+
+        if [ ! -z "$license" -a "$license" != " " ]; then
+            # license file is provided - copy it
+            echo "License file: $name/$license"
+            cp $name/$license "./license.txt"
+        fi
+
+        echo "Building wasm's for core $name"
+        cd "RetroArch"
+        cd "dist-scripts"
+
+        mv core-temp/normal/*.bc ./
+        emmake ./build-emulatorjs.sh emscripten clean no no >> "$logPath/$name-emake.log"
+        rm -f *.bc
+
+        mv core-temp/threads/*.bc ./
+        emmake ./build-emulatorjs.sh emscripten clean yes no >> "$logPath/$name-emake.log"
+        rm -f *.bc
+
+        mv core-temp/legacy/*.bc ./
+        emmake ./build-emulatorjs.sh emscripten clean no yes >> "$logPath/$name-emake.log"
+        rm -f *.bc
+
+        mv core-temp/legacyThreads/*.bc ./
+        emmake ./build-emulatorjs.sh emscripten clean yes yes >> "$logPath/$name-emake.log"
+        rm -f *.bc
+
+        echo "Packing core information for $name"
+        cd $compileStartPath
+        if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
+            7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
+            cp EmulatorJS/data/cores/$name-wasm.data $outputPath
+        fi
+
+        if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
+            7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
+            cp EmulatorJS/data/cores/$name-thread-wasm.data $outputPath
+        fi
+
+        if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
+            7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
+            cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
+        fi
+
+        if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
+            7z a -t7z EmulatorJS/data/cores/$name-thread-legacy-wasm.data ./core.json ./license.txt ../build.json
+            cp EmulatorJS/data/cores/$name-thread-legacy-wasm.data $outputPath
+        fi
+
+        # clean up to make sure the next build in the json gets the right license and core file
+        rm ./license.txt
+        rm ./core.json
+        
+        # write report to report file
+        endTime=`date -u -Is`
+        reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
+        buildReportFile="$buildReport/$name.json"
+        echo $reportString > $buildReportFile
+
     fi
-
-    echo "Building wasm's for core $name"
-    cd "RetroArch"
-    cd "dist-scripts"
-
-    mv core-temp/normal/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean no no >> "$logPath/$name-emake.log"
-    rm -f *.bc
-
-    mv core-temp/threads/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean yes no >> "$logPath/$name-emake.log"
-    rm -f *.bc
-
-    mv core-temp/legacy/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean no yes >> "$logPath/$name-emake.log"
-    rm -f *.bc
-
-    mv core-temp/legacyThreads/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean yes yes >> "$logPath/$name-emake.log"
-    rm -f *.bc
-
-    echo "Packing core information for $name"
-    cd $compileStartPath
-    if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
-        7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
-        cp EmulatorJS/data/cores/$name-wasm.data $outputPath
-    fi
-
-    if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
-        7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
-        cp EmulatorJS/data/cores/$name-thread-wasm.data $outputPath
-    fi
-
-    if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
-        7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
-        cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
-    fi
-
-    if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
-        7z a -t7z EmulatorJS/data/cores/$name-thread-legacy-wasm.data ./core.json ./license.txt ../build.json
-        cp EmulatorJS/data/cores/$name-thread-legacy-wasm.data $outputPath
-    fi
-
-    # clean up to make sure the next build in the json gets the right license and core file
-    rm ./license.txt
-    rm ./core.json
-    
-    # write report to report file
-    endTime=`date -u -Is`
-    reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
-    buildReportFile="$buildReport/$name.json"
-    echo $reportString > $buildReportFile
 done
 
 # delete all compile files
