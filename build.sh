@@ -201,7 +201,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         
         # write report to report file
         endTime=`date -u -Is`
-        reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
+        reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"status\": $status, \"options\": $options }"
         buildReportFile="$buildReport/$name.json"
         echo $reportString > $buildReportFile
 
