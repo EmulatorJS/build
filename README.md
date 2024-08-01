@@ -59,6 +59,7 @@ To add a new core, add a stanza like the below:
 | ``branch``    | The git branch to switch to when building |
 | ``makeoptions`` | Settings and options for building the core (see makeoptions table below) |
 | ``options``   | Options to be set by the emulator (see options table below) |
+| ``status``    | ``0`` or not set = ``stable``<br />``1`` = ``beta``<br />``2`` = ``experimental``<br />``3`` = ``don't build`` - the build script will skip building the core |
 
 ### makeoptions
 | Attribute | Definition |
