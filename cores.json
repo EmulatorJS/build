@@ -572,5 +572,17 @@
         "options": {},
         "license": "LICENSE",
         "repo": "https://github.com/libretro/libretro-crocods"
+    },
+    {
+        "name": "prboom",
+        "extensions": [ "wad", "iwad", "pwad" ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "license": "COPYING",
+        "repo": "https://github.com/EmulatorJS/libretro-prboom"
     }
 ]
