@@ -535,7 +535,7 @@
         },
         "options": {},
         "license": "LICENSE",
-        "repo": "https://github.com/libretro/81-libretro"
+        "repo": "https://github.com/EmulatorJS/81-libretro"
     },
     {
         "name": "fuse",
@@ -547,7 +547,7 @@
         },
         "options": {},
         "license": "LICENSE",
-        "repo": "https://github.com/libretro/fuse-libretro"
+        "repo": "https://github.com/EmulatorJS/fuse-libretro"
     },
     {
         "name": "cap32",
@@ -559,7 +559,7 @@
         },
         "options": {},
         "license": "",
-        "repo": "https://github.com/libretro/libretro-cap32"
+        "repo": "https://github.com/EmulatorJS/libretro-cap32"
     },
     {
         "name": "crocods",
@@ -571,7 +571,7 @@
         },
         "options": {},
         "license": "LICENSE",
-        "repo": "https://github.com/libretro/libretro-crocods"
+        "repo": "https://github.com/EmulatorJS/libretro-crocods"
     },
     {
         "name": "prboom",
