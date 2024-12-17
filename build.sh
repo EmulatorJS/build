@@ -49,34 +49,31 @@ mkdir -p $logPath
 
 # start pulling sources and compile
 if [ ! -d "RetroArch" ]; then
-    git clone "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
+    git clone --depth 1 "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
 fi
+cd RetroArch
+git pull
+if [ ! -d "EmulatorJS" ]; then
+    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" --depth 1 || exit 1
+fi
+cd EmulatorJS
+git pull
 
 cd "$outPath"
 rm -f *.bc
-cd "$buildPath"
-
-rm -fr $tempPath
-mkdir -p $tempPath/
-cd $tempPath
-mkdir -p normal/
-mkdir -p threads/
-mkdir -p legacy/
-mkdir -p legacyThreads/
-cd $buildPath
 
 compileProject() {
-    name=$1
-    downloadLink=$2
-    branch=$3
-    makefilePath=$4
-    makefileName=$5
-    makefileArg=$6
-    legacy=$7
-    thread=$8
+    name="$1"
+    repo="$2"
+    branch="$3"
+    makefilePath="$4"
+    makefileName="$5"
+    makefileArg="$6"
+    custom="$7"
+    build_command="$8"
 
     if [ ! -d "$name" ]; then
-        git clone "$downloadLink" "$name"
+        git clone "$repo" "$name" --depth 1
         cd "$name"
         git submodule update --init --recursive
         cd ../
@@ -88,31 +85,35 @@ compileProject() {
     fi
     git pull
     git submodule update --recursive
-    cd "$makefilePath"
 
-    build
-    if [ "$thread" != "no" ]; then
+    if [[ "$custom" = "true" ]]; then
+        eval "$build_command"
+    else
+        cd "$makefilePath"
+
+        build
         buildThreads
-    fi
-    if [ "$legacy" != "no" ]; then
         buildLegacy
-        if [ "$thread" != "no" ]; then
-             buildThreadsLegacy
-        fi
+        buildThreadsLegacy
     fi
 
     cd "$buildPath"
 }
 
-if [ ! -d "EmulatorJS" ]; then
-    git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" --depth 1 || exit 1
-fi
-cd EmulatorJS
-git pull
-cd ../
+cd "$buildPath"
 
 compileStartPath="$PWD"
 for row in $(jq -r '.[] | @base64' ../cores.json); do
+    cd "$buildPath"
+    rm -fr $tempPath
+    mkdir -p $tempPath/
+    cd $tempPath
+    mkdir -p normal/
+    mkdir -p threads/
+    mkdir -p legacy/
+    mkdir -p legacyThreads/
+    cd "$buildPath"
+
     startTime=`date -u -Is`
 
     cd $compileStartPath
@@ -129,6 +130,9 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
     options=`echo $(_jq '.') | jq -r '.options'`
+    custom=`echo $(_jq '.') | jq -r '.makeoptions.custom'`
+    build_command=`echo $(_jq '.') | jq -r '.makeoptions.build_command'`
+    build_retroarch_command=`echo $(_jq '.') | jq -r '.makeoptions.build_retroarch_command'`
 
     argumentstring=""
     for rowarg in $(echo "${arguments}"); do
@@ -138,7 +142,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     echo "Starting compile of core $name"
     echo "Working dir $PWD"
 
-    compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" >> "$logPath/$name-compile.log"
+    compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" >> "$logPath/$name-compile.log"
 
     # write JSON stanza for this core to disk
     echo ${row} | base64 --decode > "./core.json"
@@ -150,23 +154,29 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     fi
 
     echo "Building wasm's for core $name"
-    cd "RetroArch"
-    cd "dist-scripts"
+    cd RetroArch/dist-scripts
 
-    mv core-temp/normal/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean no no >> "$logPath/$name-emake.log"
-    rm -f *.bc
+    if [[ "$custom" = "true" ]]; then
+        eval "$build_retroarch_command" >> "$logPath/$name-emake.log"
+    else
+        mv core-temp/normal/*.bc ./
+        emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
+        rm -f *.bc
 
-    mv core-temp/threads/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean yes no >> "$logPath/$name-emake.log"
-    rm -f *.bc
+        mv core-temp/threads/*.bc ./
+        emmake ./build-emulatorjs.sh --clean --threads >> "$logPath/$name-emake.log"
+        rm -f *.bc
 
-    mv core-temp/legacy/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean no yes >> "$logPath/$name-emake.log"
-    rm -f *.bc
+        mv core-temp/legacy/*.bc ./
+        emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
+        rm -f *.bc
 
-    mv core-temp/legacyThreads/*.bc ./
-    emmake ./build-emulatorjs.sh emscripten clean yes yes >> "$logPath/$name-emake.log"
+        mv core-temp/legacyThreads/*.bc ./
+        emmake ./build-emulatorjs.sh --clean --threads --legacy >> "$logPath/$name-emake.log"
+        rm -f *.bc
+
+        rm -rf core-temp
+    fi
     rm -f *.bc
 
     echo "Packing core information for $name"
@@ -192,8 +202,8 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     fi
 
     # clean up to make sure the next build in the json gets the right license and core file
-    rm ./license.txt
-    rm ./core.json
+    rm -f ./license.txt
+    rm -f ./core.json
     
     # write report to report file
     endTime=`date -u -Is`

@@ -584,5 +584,19 @@
         "options": {},
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/libretro-prboom"
+    },
+    {
+        "name": "ppsspp",
+        "extensions": [ "iso" ],
+        "makeoptions": {
+            "custom": "true",
+            "build_command": "cd libretro/emscripten/ && bash build_emscripten.sh && cd ../../ && cp -r libretro/emscripten/build/ ../RetroArch/ffmpeg && cp libretro/emscripten/build/*.bc ../RetroArch/dist-scripts/",
+            "build_retroarch_command": "emmake ./build-emulatorjs.sh --clean --threads"
+        },
+        "options": {
+            "defaultWebGL2": true
+        },
+        "license": "LICENSE.TXT",
+        "repo": "https://github.com/EmulatorJS/ppsspp"
     }
 ]
