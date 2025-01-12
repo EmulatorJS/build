@@ -60,6 +60,7 @@ jobs:
     steps:
       - name: Build Cores
         run: |
+          source "emsdk/emsdk_env.sh"
           bash build.sh --core=${{ matrix.core }}
   
   package:
