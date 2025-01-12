@@ -38,6 +38,7 @@ jobs:
         run: |
           rm -fR ./compile
           rm -fR ./output
+          rm -f ./cores.zip
 
   get-jobs:
     name: Get Jobs
@@ -46,8 +47,10 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      # - id: set-matrix
+      #   run: echo "::set-output name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')"
       - id: set-matrix
-        run: echo "::set-output name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')"
+        run: echo "name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')" >> $GITHUB_OUTPUT
 
   build-core:
     name: Build Core
