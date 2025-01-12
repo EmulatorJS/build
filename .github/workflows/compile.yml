@@ -5,7 +5,7 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
   release:
-    types: [ created ]
+    types: [ published ]
   workflow_dispatch:
 
 env:
@@ -57,7 +57,9 @@ jobs:
 
   build-core:
     name: Build Core
-    needs: get-jobs
+    needs:
+      - build-environment
+      - get-jobs
     runs-on: [self-hosted, linux, x64 ]
     continue-on-error: false
     strategy:
@@ -74,7 +76,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.core }}
+          name: ${{ matrix.core }}.zip
           path: ./output/${{ matrix.core }}.zip
   
   package:
@@ -108,13 +110,37 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cores.zip
-
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./cores.zip
           asset_name: cores.zip
+          asset_content_type: application/zip
+
+  release-core:
+    name: Release Core
+    needs: 
+      - get-jobs
+      - build-core
+    runs-on: [self-hosted, linux, x64 ]
+    if: github.event_name == 'release'
+    strategy:
+      matrix:
+        core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ matrix.core }}.zip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ matrix.core }}.zip
+          asset_name: ${{ matrix.core }}.zip
           asset_content_type: application/zip
