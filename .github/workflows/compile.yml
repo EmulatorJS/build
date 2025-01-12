@@ -57,5 +57,5 @@ jobs:
       - name: Zip files
         run: |
           cd ./output
-          zip -r 'cores.zip' *
+          zip -r '../cores.zip' *
           cd ..
