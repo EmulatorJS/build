@@ -59,3 +59,9 @@ jobs:
           cd ./output
           zip -r '../cores.zip' *
           cd ..
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cores.zip
+          path: ./cores.zip
