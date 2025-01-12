@@ -12,6 +12,8 @@ env:
 permissions:
   id-token: write
   attestations: write
+  contents: write
+  discussions: write
 
 jobs:
   build-environment:
@@ -108,11 +110,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: cores.zip
-          path: cores.zip
+          path: artifacts/cores.zip
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: cores.zip
+          files: artifacts/cores.zip
 
   release-core:
     name: Release Core
@@ -129,8 +131,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.core }}.zip
-          path: ${{ matrix.core }}.zip
+          path: artifacts/${{ matrix.core }}.zip
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.core }}.zip
+          files: artifacts/${{ matrix.core }}.zip
