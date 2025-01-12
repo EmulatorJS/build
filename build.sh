@@ -249,6 +249,8 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
         echo "Working dir $PWD"
 
+        unset FROZEN_CACHE
+        
         compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" >> "$logPath/$name-compile.log"
 
         # write JSON stanza for this core to disk

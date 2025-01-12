@@ -50,7 +50,6 @@ jobs:
     steps:
       - name: Build Cores
         run: |
-          unset FROZEN_CACHE
           bash build.sh --core=${{ matrix.core }}
   
   package:
