@@ -310,7 +310,10 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
             cp EmulatorJS/data/cores/$name-thread-legacy-wasm.data $outputPath
         fi
 
+        # create zip file containing the core data files
+        cd EmulatorJS/data/cores
         zip $outputPath/$name.zip EmulatorJS/data/cores/$name-wasm.data EmulatorJS/data/cores/$name-thread-wasm.data EmulatorJS/data/cores/$name-legacy-wasm.data EmulatorJS/data/cores/$name-thread-legacy-wasm.data
+        cd $compileStartPath
 
         # clean up to make sure the next build in the json gets the right license and core file
         rm -f ./license.txt
