@@ -4,10 +4,12 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [ created ]
   workflow_dispatch:
 
 env:
-  EMCC_SKIP_SANITY_CHECK: '1'
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   id-token: write
@@ -66,6 +68,9 @@ jobs:
         run: |
           source "emsdk/emsdk_env.sh"
           bash build.sh --core=${{ matrix.core }}
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: './output/${{ matrix.core }}.zip'
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -92,3 +97,24 @@ jobs:
         with:
           name: cores.zip
           path: ./cores.zip
+
+  release:
+    name: Release
+    needs: package
+    runs-on: [self-hosted, linux, x64 ]
+    if: github.event_name == 'release'
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: cores.zip
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cores.zip
+          asset_name: cores.zip
+          asset_content_type: application/zip
