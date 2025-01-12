@@ -23,7 +23,7 @@
 	// },
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	//"postCreateCommand": "bash /workspaces/build/build_env.sh",
+	"postCreateCommand": "bash /workspaces/build/build_env.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {
