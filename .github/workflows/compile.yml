@@ -76,7 +76,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.core }}.zip
+          name: ${{ matrix.core }}
           path: ./output/${{ matrix.core }}.zip
   
   package:
@@ -97,7 +97,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cores.zip
+          name: cores
           path: ./cores.zip
 
   release:
