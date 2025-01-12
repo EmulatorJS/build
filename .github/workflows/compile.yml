@@ -3,6 +3,9 @@ name: CI Emscripten
 on:
   workflow_dispatch:
 
+env:
+  EMCC_SKIP_SANITY_CHECK: '1'
+
 jobs:
   build-environment:
     name: Build Environment
@@ -22,9 +25,6 @@ jobs:
           rm -fR ./compile
           rm -fR ./output
 
-      # - name: Setup Emscripten
-      #   run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
-
   get-jobs:
     name: Get Jobs
     needs: build-environment
@@ -34,18 +34,16 @@ jobs:
     steps:
       - id: set-matrix
         run: echo "::set-output name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')"
+
   build-core:
     name: Build Core
     needs: get-jobs
     runs-on: [self-hosted, linux, x64 ]
     continue-on-error: true
     strategy:
-      max-parallel: 2
       matrix:
         core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
     steps:
-      # - name: Build Cores
-      #   run: "source ./.emsdk/emsdk_env.sh && bash build.sh --core ${{ matrix.core }}"
       - name: Build Cores
         run: "bash build.sh --core ${{ matrix.core }}"
   
