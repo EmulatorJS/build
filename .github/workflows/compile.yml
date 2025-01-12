@@ -43,7 +43,7 @@ jobs:
         run: |
           rm -fR ./compile
           rm -fR ./output
-          rm -f ./cores.zip
+          rm -fR ./artifacts
 
   get-jobs:
     name: Get Jobs
