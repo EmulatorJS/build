@@ -635,11 +635,15 @@
         "extensions": [ "iso" ],
         "makeoptions": {
             "custom": "true",
+            "buildpath": "./",
+            "makescript": "",
+            "arguments": [],
             "build_command": "cd libretro/emscripten/ && bash build_emscripten.sh && cd ../../ && cp -r libretro/emscripten/build/ ../RetroArch/ffmpeg && cp libretro/emscripten/build/*.bc ../RetroArch/dist-scripts/",
             "build_retroarch_command": "emmake ./build-emulatorjs.sh --clean --threads"
         },
         "options": {
-            "defaultWebGL2": true
+            "defaultWebGL2": true,
+            "requireThreads": true
         },
         "save": false,
         "license": "LICENSE.TXT",

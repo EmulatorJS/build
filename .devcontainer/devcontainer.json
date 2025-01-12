@@ -4,7 +4,12 @@
 	"name": "EmulatorJS Core Build",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	//"image": "mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm",
-	"build": { "dockerfile": "Dockerfile" },
+	"build": { 
+		"dockerfile": "Dockerfile",
+		"options": [
+			"--platform=linux/amd64"
+		]
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -18,7 +23,7 @@
 	// },
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bash /workspaces/build/build_env.sh",
+	//"postCreateCommand": "bash /workspaces/build/build_env.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {

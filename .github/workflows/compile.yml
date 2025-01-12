@@ -1,12 +1,11 @@
 name: CI Emscripten
 
 on:
-  push:
-    paths:
-      - 'VERSION'
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-environment:
+    name: Build Environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
