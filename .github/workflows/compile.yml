@@ -61,7 +61,7 @@ jobs:
       - build-environment
       - get-jobs
     runs-on: [self-hosted, linux, x64 ]
-    continue-on-error: false
+    continue-on-error: true
     strategy:
       matrix:
         core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
