@@ -17,6 +17,11 @@ jobs:
           packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch emscripten
           version: 1.0
 
+      - name: Cleanup Environment
+        run: |
+          rm -fR ./compile
+          rm -fR ./output
+
       # - name: Setup Emscripten
       #   run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
 
@@ -50,10 +55,7 @@ jobs:
     runs-on: [self-hosted, linux, x64 ]
     steps:
       - name: Zip files
-        run: "zip -r 'cores.zip' ./compile/EmulatorJS/data/cores/*.data"
-
-      - name: Generate checksums
-        uses: jmgilman/actions-generate-checksum@v1
-        with:
-          patterns: |
-            ./compile/EmulatorJS/data/cores/*.data
+        run: |
+          cd ./output
+          zip -r 'cores.zip' *
+          cd ..
