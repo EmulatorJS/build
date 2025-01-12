@@ -6,6 +6,10 @@ on:
 env:
   EMCC_SKIP_SANITY_CHECK: '1'
 
+permissions:
+  id-token: write
+  attestations: write
+
 jobs:
   build-environment:
     name: Build Environment
@@ -58,6 +62,10 @@ jobs:
           zip -r '../cores.zip' *
           cd ..
       
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: './cores.zip'
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:

@@ -1,24 +1,5 @@
 [
     {
-        "name": "mame2003",
-        "extensions": [ "zip" ],
-        "makeoptions": {
-            "buildpath": "./",
-            "makescript": "Makefile",
-            "arguments": []
-        },
-        "options": {
-            "file": "MAME 2003 (0.78)/MAME 2003 (0.78).opt",
-            "settings": {
-                "mame2003_skip_disclaimer": "enabled",
-                "mame2003_skip_warnings": "enabled"
-            }
-        },
-        "save": false,
-        "license": "LICENSE.md",
-        "repo": "https://github.com/EmulatorJS/mame2003-libretro"
-    },
-    {
         "name": "vice_x64",
         "extensions": [ "d64", "d6z", "d71", "d7z", "d80", "d81", "d82", "d8z", "g64", "g6z", "g41", "g4z", "x64", "x6z", "nib", "nbz", "d2m", "d4m", "t64", "tap", "tcrt", "prg", "p00", "crt", "bin", "cmd", "m3u", "vfl", "vsf", "zip", "7z", "gz", "20", "40", "60", "a0", "b0", "rom" ],
         "makeoptions": {
@@ -523,6 +504,25 @@
         "save": "srm",
         "license": "",
         "repo": "https://github.com/EmulatorJS/parallel-n64"
+    },
+    {
+        "name": "mame2003",
+        "extensions": [ "zip" ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {
+            "file": "MAME 2003 (0.78)/MAME 2003 (0.78).opt",
+            "settings": {
+                "mame2003_skip_disclaimer": "enabled",
+                "mame2003_skip_warnings": "enabled"
+            }
+        },
+        "save": false,
+        "license": "LICENSE.md",
+        "repo": "https://github.com/EmulatorJS/mame2003-libretro"
     },
     {
         "name": "mame2003_plus",
