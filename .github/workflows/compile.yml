@@ -70,14 +70,13 @@ jobs:
         run: |
           source "emsdk/emsdk_env.sh"
           bash build.sh --core=${{ matrix.core }}
+      - name: Move core
+        run: |
+          mkdir -p ./artifacts
+          mv ./output/${{ matrix.core }}.zip ./artifacts/${{ matrix.core }}.zip
       - uses: actions/attest-build-provenance@v2
         with:
-          subject-path: './output/${{ matrix.core }}.zip'
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.core }}
-          path: ./output/${{ matrix.core }}.zip
+          subject-path: './artifacts/${{ matrix.core }}.zip'
   
   package:
     name: Package
@@ -87,18 +86,11 @@ jobs:
       - name: Zip files
         run: |
           cd ./output
-          zip -r '../cores.zip' * -x '*.zip'
+          zip -r '../artifacts/cores.zip' * -x '*.zip'
           cd ..
-      
       - uses: actions/attest-build-provenance@v2
         with:
-          subject-path: './cores.zip'
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cores
-          path: ./cores.zip
+          subject-path: './artifacts/cores.zip'
 
   release:
     name: Release
@@ -106,11 +98,6 @@ jobs:
     runs-on: [self-hosted, linux, x64 ]
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: cores.zip
-          path: artifacts/cores.zip
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
@@ -127,11 +114,6 @@ jobs:
       matrix:
         core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ matrix.core }}.zip
-          path: artifacts/${{ matrix.core }}.zip
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
