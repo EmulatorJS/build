@@ -1,8 +1,9 @@
 name: CI Emscripten
 
 on:
-  release:
-    types: [ published ]
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 env:
@@ -107,15 +108,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: cores.zip
+          path: cores.zip
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./cores.zip
-          asset_name: cores.zip
-          asset_content_type: application/zip
+          files: cores.zip
 
   release-core:
     name: Release Core
@@ -132,12 +129,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.core }}.zip
+          path: ${{ matrix.core }}.zip
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./${{ matrix.core }}.zip
-          asset_name: ${{ matrix.core }}.zip
-          asset_content_type: application/zip
+          files: ${{ matrix.core }}.zip
