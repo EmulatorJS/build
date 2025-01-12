@@ -49,7 +49,9 @@ jobs:
         core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
     steps:
       - name: Build Cores
-        run: "bash build.sh --core ${{ matrix.core }}"
+        run: |
+          unset FROZEN_CACHE
+          bash build.sh --core=${{ matrix.core }}
   
   package:
     name: Package
