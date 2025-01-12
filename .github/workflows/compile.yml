@@ -6,7 +6,7 @@ on:
 jobs:
   build-environment:
     name: Build Environment
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64 ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,29 +16,38 @@ jobs:
 
       - name: Setup Emscripten
         run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
-        
-      - name: Build Cores
-        run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
 
+  get-jobs:
+    name: Get Jobs
+    needs: build-environment
+    runs-on: [self-hosted, linux, x64 ]
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')"
+  build-core:
+    name: Build Core
+    needs: get-jobs
+    runs-on: [self-hosted, linux, x64 ]
+    strategy:
+      max-parallel: 2
+      matrix:
+        core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
+    steps:
+      - name: Build Cores
+        run: "source ./.emsdk/emsdk_env.sh && bash build.sh --core ${{ matrix.core }}"
+  
+  package:
+    name: Package
+    needs: build-core
+    runs-on: [self-hosted, linux, x64 ]
+    steps:
       - name: Zip files
-        run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data"
+        run: "zip -r 'cores.zip' ./compile/EmulatorJS/data/cores/*.data"
 
       - name: Generate checksums
         uses: jmgilman/actions-generate-checksum@v1
         with:
           patterns: |
             ./compile/EmulatorJS/data/cores/*.data
-
-      - name: Get Version
-        id: version
-        run: echo "VERSION=$(cat VERSION)" >> "$GITHUB_OUTPUT"
-
-      - name: Create Release & Make Notes & Upload Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version.outputs.VERSION }}
-        run: |
-          gh release create "v$VERSION" --title "Latest Version v$VERSION" --generate-notes
-          gh release upload "v$VERSION" ./compile/EmulatorJS/data/cores/*.data
-          gh release upload "v$VERSION" "EmulatorJS Cores.zip"
-          gh release upload "v$VERSION" "checksum.txt#checksum-256.txt"
