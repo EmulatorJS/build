@@ -1,9 +1,6 @@
 name: CI Emscripten
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
   release:
     types: [ published ]
   workflow_dispatch:
@@ -107,7 +104,7 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: cores.zip
       - name: Upload Release Asset
@@ -132,7 +129,7 @@ jobs:
         core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.core }}.zip
       - name: Upload Release Asset
