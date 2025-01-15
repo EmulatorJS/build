@@ -3,7 +3,7 @@ name: CI Emscripten
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 env:
@@ -29,21 +29,23 @@ jobs:
           packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake
           version: 1.0
 
-      - name: Install Emscripten
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          git pull
-          ./emsdk install latest
-          ./emsdk activate latest
-          source ./emsdk_env.sh
-          cd ..
-
       - name: Cleanup Environment
         run: |
+          rm -fR ./emsdk
           rm -fR ./compile
           rm -fR ./output
           rm -fR ./artifacts
+
+      - name: Install Emscripten
+        env:
+          EMSCRIPTEN_VERSION: ${{ vars.EMSCRIPTENSDKVERSION }}
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install ${EMSCRIPTEN_VERSION}
+          ./emsdk activate ${EMSCRIPTEN_VERSION}
+          source ./emsdk_env.sh
+          cd ..
 
   get-jobs:
     name: Get Jobs
