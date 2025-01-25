@@ -123,6 +123,7 @@ jobs:
       - name: Setup SSHFS
         run: |
           mkdir -p ./mnt/cdn
+          ssh-keygen -R ${{ secrets.SSH_HOST }}
           sshfs ${{ secrets.SSH_USERNAME}}@${{ secrets.SSH_HOST }}:/ ./mnt/cdn -o debug -o "IdentityFile=~/.ssh/id_rsa"
       - name: Replace remote files
         run: |
