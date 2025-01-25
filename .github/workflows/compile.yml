@@ -123,11 +123,10 @@ jobs:
       - name: Setup SSHFS
         run: |
           mkdir -p ./mnt/cdn
-          sshfs ${{ secrets.SSH_HOST }}:/cores ./mnt/cdn
+          sshfs ${{ secrets.SSH_HOST }} ./mnt/cdn
       - name: Replace remote files
         run: |
-          rm -fR ./mnt/cdn/*
-          cp ./output/ ./mnt/cdn/
+          cp -f ./output/ ./mnt/cdn/cores/
 
   release-core:
     name: Release Core
