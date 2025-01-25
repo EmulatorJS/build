@@ -26,7 +26,7 @@ jobs:
       - name: Install Cache Apt Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake
+          packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake sshfs
           version: 1.0
 
       - name: Cleanup Environment
@@ -104,14 +104,30 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/cores.zip
-      - name: Upload to CDN using SFTP
+
+  upload-cdn:
+    name: Upload to CDN
+    needs:
+      - package
+      - release
+    runs-on: [self-hosted, linux, x64 ]
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Setup SSH
         run: |
-          echo "Uploading to CDN"
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
           echo "Host ${{ secrets.SSH_HOST }}" > ~/.ssh/config
-          echo "User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
-          echo "IdentityFile ${{ secrets.SSH_PRIVATE_KEY }}" >> ~/.ssh/config
-          sftp -b - artifacts/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:cores/
-          echo "Uploaded to CDN"
+          echo "  User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          chmod 600 ~/.ssh/id_rsa
+      - name: Setup SSHFS
+        run: |
+          mkdir -p ./mnt/cdn
+          sshfs ${{ secrets.SSH_HOST }}:/cores ./mnt/cdn
+      - name: Replace remote files
+        run: |
+          rm -fR ./mnt/cdn/*
+          cp ./output/ ./mnt/cdn/
 
   release-core:
     name: Release Core
