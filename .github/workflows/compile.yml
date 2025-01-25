@@ -123,7 +123,7 @@ jobs:
       - name: Setup SSHFS
         run: |
           mkdir -p ./mnt/cdn
-          sshfs ${{ secrets.SSH_HOST }} ./mnt/cdn
+          sshfs ${{ secrets.SSH_USERNAME}}@${{ secrets.SSH_HOST }}:/ ./mnt/cdn
       - name: Replace remote files
         run: |
           cp -f ./output/ ./mnt/cdn/cores/
