@@ -104,6 +104,14 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/cores.zip
+      - name: Upload to CDN using SFTP
+        run: |
+          echo "Uploading to CDN"
+          echo "Host ${{ secrets.SSH_HOST }}" > ~/.ssh/config
+          echo "User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
+          echo "IdentityFile ${{ secrets.SSH_PRIVATE_KEY }}" >> ~/.ssh/config
+          sftp -b - artifacts/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:cores/
+          echo "Uploaded to CDN"
 
   release-core:
     name: Release Core
