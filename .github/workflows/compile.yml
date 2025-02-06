@@ -120,13 +120,9 @@ jobs:
           echo "  User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
           echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
           chmod 600 ~/.ssh/id_rsa
-      - name: Setup SSHFS
-        run: |
-          mkdir -p ./mnt/cdn
-          sshfs ${{ secrets.SSH_USERNAME}}@${{ secrets.SSH_HOST }}:/ ./mnt/cdn -o debug -o "IdentityFile=~/.ssh/id_rsa,StrictHostKeyChecking=no"
       - name: Replace remote files
         run: |
-          cp -f ./output/ ./mnt/cdn/cores/
+          rsync -Pav -e "ssh -i $HOME/.ssh/id_rsa" artifacts/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/cores/
 
   release-core:
     name: Release Core
