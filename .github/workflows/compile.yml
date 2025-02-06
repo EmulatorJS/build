@@ -26,7 +26,7 @@ jobs:
       - name: Install Cache Apt Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake sshfs
+          packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake sshfs rsync
           version: 1.0
 
       - name: Cleanup Environment
