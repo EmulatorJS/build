@@ -105,13 +105,12 @@ jobs:
         with:
           files: artifacts/cores.zip
 
-  upload-cdn:
-    name: Upload to CDN
+  upload-nightly-cdn:
+    name: Upload nightly to CDN
     needs:
-      - package
-      - release
+      - get-jobs
+      - build-core
     runs-on: [self-hosted, linux, x64 ]
-    if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Setup SSH
         run: |
