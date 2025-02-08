@@ -123,7 +123,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
       - name: Replace remote files
         run: |
-          rsync -Pav -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/cores/
+          rsync -Pav -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/
 
   release-core:
     name: Release Core
