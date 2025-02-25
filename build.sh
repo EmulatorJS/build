@@ -36,6 +36,22 @@ coreToBuild=""
 listAllCores=false
 listCoreNames=false
 
+# set up execution variables
+forceBuild=false
+isRelease=false
+if [[ -z "$DEPLOY_ENV" ]]; then
+    isRelease=true
+fi
+# if file ./isRelease is present and it's contents are "true" then set isRelease to true
+if [ -f "./isRelease" ]; then
+    isRelease=$(<./isRelease)
+fi
+isWorkflowDispatch=false
+# if file ./isWorkflowDispatch is present and it's contents are "true" then set isWorkflowDispatch to true
+if [ -f "./isWorkflowDispatch" ]; then
+    isWorkflowDispatch=$(<./isWorkflowDispatch)
+fi
+
 # process arguments
 for i in "$@"
 do
@@ -56,11 +72,31 @@ case $i in
         listCoreNames=true
         ;;
 
+    --force)
+        # force build
+        forceBuild=true
+        ;;
+
     *)
         # unknown option
         ;;
 esac
 done
+
+# set build rules
+buildAllCores=false
+if [ "$forceBuild" = true ]; then
+    echo "Full build forced by command line"
+    buildAllCores=true
+fi
+if [ "$isRelease" = true ]; then
+    echo "Full build forced by release"
+    buildAllCores=true
+fi
+if [ "$isWorkflowDispatch" = true ]; then
+    echo "Full build forced by manual workflow start"
+    buildAllCores=true
+fi
 
 # set up paths
 initialPath="$PWD"
@@ -112,11 +148,25 @@ mkdir -p $logPath
 
 if [ "$listAllCores" = false ]; then
     # start pulling sources and compile
+
+    # pull retroarch
     if [ ! -d "RetroArch" ]; then
         git clone --depth 1 "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
     fi
     cd RetroArch
     git pull
+    # if latest commit is in the last 36 hours then set buildAllCores to true
+    if [ "$buildAllCores" = false ]; then
+        lastCommitDate=$(git log -1 --format=%cd --date=iso)
+        lastCommitDate=$(date -d "$lastCommitDate" +%s)
+        currentDate=$(date +%s)
+        if [ $((currentDate - lastCommitDate)) -lt 129600 ]; then
+            echo "Latest commit is less than 36 hours ago, forcing full build"
+            buildAllCores=true
+        fi
+    fi
+
+    # pull emulatorjs
     if [ ! -d "EmulatorJS" ]; then
         git clone "https://github.com/EmulatorJS/EmulatorJS.git" "EmulatorJS" --depth 1 || exit 1
     fi
@@ -136,20 +186,6 @@ compileProject() {
     makefileArg="$6"
     custom="$7"
     build_command="$8"
-
-    if [ ! -d "$name" ]; then
-        git clone "$repo" "$name" --depth 1
-        cd "$name"
-        git submodule update --init --recursive
-        cd ../
-    fi
-    cd "$name"
-    if [ $branch != 'null' ]; then
-        echo "Checking out branch $branch"
-        git checkout "$branch"
-    fi
-    git pull
-    git submodule update --recursive
 
     if [[ "$custom" = "true" ]]; then
         eval "$build_command"
@@ -251,79 +287,112 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
         unset FROZEN_CACHE
         
-        compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" >> "$logPath/$name-compile.log"
+        # pull core repo
+        if [ ! -d "$name" ]; then
+            git clone "$repo.git" "$name" --depth 1
+            cd "$name"
+            git submodule update --init --recursive
+            cd ../
+        fi
+        cd "$name"
+        if [ $branch != 'null' ]; then
+            echo "Checking out branch $branch"
+            git checkout "$branch"
+        fi
+        git pull
+        git submodule update --recursive
 
-        # write JSON stanza for this core to disk
-        echo ${row} | base64 --decode > "./core.json"
+        buildCore=false
 
-        if [ ! -z "$license" -a "$license" != " " ]; then
-            # license file is provided - copy it
-            echo "License file: $name/$license"
-            cp $name/$license "./license.txt"
+        # if latest commit is in the last 36 hours then set buildCore to true
+        lastCommitDate=$(git log -1 --format=%cd --date=iso)
+        lastCommitDate=$(date -d "$lastCommitDate" +%s)
+        currentDate=$(date +%s)
+        if [ $((currentDate - lastCommitDate)) -lt 129600 ]; then
+            echo "Latest commit is less than 36 hours ago, forcing build for $name"
+            buildCore=true
         fi
 
-        echo "Building wasm's for core $name"
-        cd "$buildPath/RetroArch/dist-scripts"
-
-        if [[ "$custom" = "true" ]]; then
-            eval "$build_retroarch_command" >> "$logPath/$name-emake.log"
-        else
-            mv core-temp/normal/*.bc ./
-            emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
-            rm -f *.bc
-
-            mv core-temp/threads/*.bc ./
-            emmake ./build-emulatorjs.sh --clean --threads >> "$logPath/$name-emake.log"
-            rm -f *.bc
-
-            mv core-temp/legacy/*.bc ./
-            emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
-            rm -f *.bc
-
-            mv core-temp/legacyThreads/*.bc ./
-            emmake ./build-emulatorjs.sh --clean --threads --legacy >> "$logPath/$name-emake.log"
-            rm -f *.bc
-
-            rm -rf core-temp
+        if [ "$buildAllCores" = true ]; then
+            buildCore=true
         fi
-        rm -f *.bc
-
-        echo "Packing core information for $name"
-        cd $compileStartPath
-        if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-wasm.data $outputPath
-        fi
-
-        if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-thread-wasm.data $outputPath
-        fi
-
-        if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
-        fi
-
-        if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-thread-legacy-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-thread-legacy-wasm.data $outputPath
-        fi
-
-        # create zip file containing the core data files
-        cd EmulatorJS/data/cores
-        zip $outputPath/$name.zip $name-wasm.data $name-thread-wasm.data $name-legacy-wasm.data $name-thread-legacy-wasm.data
-        cd $compileStartPath
-
-        # clean up to make sure the next build in the json gets the right license and core file
-        rm -f ./license.txt
-        rm -f ./core.json
         
-        # write report to report file
-        endTime=`date -u -Is`
-        reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
-        buildReportFile="$buildReport/$name.json"
-        echo $reportString > $buildReportFile
+        # compile core if buildCore is true
+        if [ "$buildCore" = true ]; then
+            compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" >> "$logPath/$name-compile.log"
+
+            # write JSON stanza for this core to disk
+            echo ${row} | base64 --decode > "./core.json"
+
+            if [ ! -z "$license" -a "$license" != " " ]; then
+                # license file is provided - copy it
+                echo "License file: $name/$license"
+                cp $name/$license "./license.txt"
+            fi
+
+            echo "Building wasm's for core $name"
+            cd "$buildPath/RetroArch/dist-scripts"
+
+            if [[ "$custom" = "true" ]]; then
+                eval "$build_retroarch_command" >> "$logPath/$name-emake.log"
+            else
+                mv core-temp/normal/*.bc ./
+                emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
+                rm -f *.bc
+
+                mv core-temp/threads/*.bc ./
+                emmake ./build-emulatorjs.sh --clean --threads >> "$logPath/$name-emake.log"
+                rm -f *.bc
+
+                mv core-temp/legacy/*.bc ./
+                emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
+                rm -f *.bc
+
+                mv core-temp/legacyThreads/*.bc ./
+                emmake ./build-emulatorjs.sh --clean --threads --legacy >> "$logPath/$name-emake.log"
+                rm -f *.bc
+
+                rm -rf core-temp
+            fi
+            rm -f *.bc
+
+            echo "Packing core information for $name"
+            cd $compileStartPath
+            if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-wasm.data $outputPath
+            fi
+
+            if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-thread-wasm.data $outputPath
+            fi
+
+            if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
+            fi
+
+            if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-thread-legacy-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-thread-legacy-wasm.data $outputPath
+            fi
+
+            # create zip file containing the core data files
+            cd EmulatorJS/data/cores
+            zip $outputPath/$name.zip $name-wasm.data $name-thread-wasm.data $name-legacy-wasm.data $name-thread-legacy-wasm.data
+            cd $compileStartPath
+
+            # clean up to make sure the next build in the json gets the right license and core file
+            rm -f ./license.txt
+            rm -f ./core.json
+            
+            # write report to report file
+            endTime=`date -u -Is`
+            reportString="{ \"core\": \"$name\", \"buildStart\": \"$startTime\", \"buildEnd\": \"$endTime\", \"options\": $options }"
+            buildReportFile="$buildReport/$name.json"
+            echo $reportString > $buildReportFile
+        fi
     fi
 done
 
