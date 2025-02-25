@@ -86,15 +86,12 @@ done
 # set build rules
 buildAllCores=false
 if [ "$forceBuild" = true ]; then
-    echo "Full build forced by command line"
     buildAllCores=true
 fi
 if [ "$isRelease" = true ]; then
-    echo "Full build forced by release"
     buildAllCores=true
 fi
 if [ "$isWorkflowDispatch" = true ]; then
-    echo "Full build forced by manual workflow start"
     buildAllCores=true
 fi
 

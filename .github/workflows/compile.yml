@@ -53,7 +53,6 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
             echo "true" > ./isRelease
-            echo "This is a release"
           else
             echo "false" > ./isRelease
           fi
@@ -62,7 +61,6 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "true" > ./isWorkflowDispatch
-            echo "This is a workflow dispatch"
           else
             echo "false" > ./isWorkflowDispatch
           fi
