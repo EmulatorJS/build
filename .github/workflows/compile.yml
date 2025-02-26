@@ -49,22 +49,6 @@ jobs:
           source ./emsdk_env.sh
           cd ..
 
-      - name: Set isRelease
-        run: |
-          if [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
-            echo "true" > ./isRelease
-          else
-            echo "false" > ./isRelease
-          fi
-
-      - name: Set isWorkflowDispatch
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "true" > ./isWorkflowDispatch
-          else
-            echo "false" > ./isWorkflowDispatch
-          fi
-
   get-jobs:
     name: Get Jobs
     needs: build-environment
