@@ -12,10 +12,9 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
-  id-token: write
-  attestations: write
-  contents: write
-  discussions: write
+  id-token: write # required by attest-build-provenance, softprops/action-gh-release
+  attestations: write # required by attest-build-provenance, softprops/action-gh-release
+  contents: write # required by softprops/action-gh-release
 
 jobs:
   build-environment:
@@ -123,7 +122,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
       - name: Replace remote files
         run: |
-          rsync -Pav -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/
+          rsync -Pavz -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/
 
   release-core:
     name: Release Core
