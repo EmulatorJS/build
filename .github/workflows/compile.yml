@@ -2,44 +2,140 @@ name: CI Emscripten
 
 on:
   push:
-    paths:
-      - 'VERSION'
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  id-token: write # required by attest-build-provenance, softprops/action-gh-release
+  attestations: write # required by attest-build-provenance, softprops/action-gh-release
+  contents: write # required by softprops/action-gh-release
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-environment:
+    name: Build Environment
+    runs-on: [self-hosted, linux, x64 ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         
-      - name: Install Dependencies
-        run: sudo apt install -y p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl
-
-      - name: Setup Emscripten
-        run: "git clone https://github.com/emscripten-core/emsdk.git .emsdk && cd .emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && wget https://raw.githubusercontent.com/EmulatorJS/build/main/emscripten.patch && patch -u -p0 -i emscripten.patch && cd ../"
-        
-      - name: Build Cores
-        run: "source ./.emsdk/emsdk_env.sh && bash build.sh"
-
-      - name: Zip files
-        run: "zip -r 'EmulatorJS Cores.zip' ./compile/EmulatorJS/data/cores/*.data"
-
-      - name: Generate checksums
-        uses: jmgilman/actions-generate-checksum@v1
+      - name: Install Cache Apt Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          patterns: |
-            ./compile/EmulatorJS/data/cores/*.data
+          packages: p7zip-full binutils-mips-linux-gnu build-essential pkgconf python3 git zip jq wget curl patch cmake sshfs rsync
+          version: 1.0
 
-      - name: Get Version
-        id: version
-        run: echo "VERSION=$(cat VERSION)" >> "$GITHUB_OUTPUT"
-
-      - name: Create Release & Make Notes & Upload Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version.outputs.VERSION }}
+      - name: Cleanup Environment
         run: |
-          gh release create "v$VERSION" --title "Latest Version v$VERSION" --generate-notes
-          gh release upload "v$VERSION" ./compile/EmulatorJS/data/cores/*.data
-          gh release upload "v$VERSION" "EmulatorJS Cores.zip"
-          gh release upload "v$VERSION" "checksum.txt#checksum-256.txt"
+          rm -fR ./emsdk
+          rm -fR ./compile
+          rm -fR ./output
+          rm -fR ./artifacts
+
+      - name: Install Emscripten
+        env:
+          EMSCRIPTEN_VERSION: ${{ vars.EMSCRIPTENSDKVERSION }}
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install ${EMSCRIPTEN_VERSION}
+          ./emsdk activate ${EMSCRIPTEN_VERSION}
+          source ./emsdk_env.sh
+          cd ..
+
+  get-jobs:
+    name: Get Jobs
+    needs: build-environment
+    runs-on: [self-hosted, linux, x64 ]
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(bash ./build.sh --list --core-names-only | jq -Rsc '. / "\n" - [""]')"
+
+  build-core:
+    name: Build Core
+    needs:
+      - build-environment
+      - get-jobs
+    runs-on: [self-hosted, linux, x64 ]
+    continue-on-error: true
+    strategy:
+      matrix:
+        core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
+    steps:
+      - name: Build Cores
+        run: |
+          source "emsdk/emsdk_env.sh"
+          bash build.sh --core=${{ matrix.core }}
+      - name: Move core
+        run: |
+          mkdir -p ./artifacts
+          mv ./output/${{ matrix.core }}.zip ./artifacts/${{ matrix.core }}.zip
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: './artifacts/${{ matrix.core }}.zip'
+  
+  package:
+    name: Package
+    needs: build-core
+    runs-on: [self-hosted, linux, x64 ]
+    steps:
+      - name: Zip files
+        run: |
+          cd ./output
+          zip -r '../artifacts/cores.zip' * -x '*.zip'
+          cd ..
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: './artifacts/cores.zip'
+
+  release:
+    name: Release
+    needs: package
+    runs-on: [self-hosted, linux, x64 ]
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/cores.zip
+
+  upload-nightly-cdn:
+    name: Upload nightly to CDN
+    needs:
+      - get-jobs
+      - build-core
+    runs-on: [self-hosted, linux, x64 ]
+    steps:
+      - name: Setup SSH
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          echo "Host ${{ secrets.SSH_HOST }}" > ~/.ssh/config
+          echo "  User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          chmod 600 ~/.ssh/id_rsa
+      - name: Replace remote files
+        run: |
+          rsync -Pavz -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/
+
+  release-core:
+    name: Release Core
+    needs: 
+      - get-jobs
+      - build-core
+    runs-on: [self-hosted, linux, x64 ]
+    if: startsWith(github.ref, 'refs/tags/')
+    strategy:
+      matrix:
+        core: ${{fromJson(needs.get-jobs.outputs.matrix)}}
+    steps:
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/${{ matrix.core }}.zip
