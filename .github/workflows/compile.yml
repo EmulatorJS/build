@@ -19,7 +19,7 @@ permissions:
 jobs:
   build-environment:
     name: Build Environment
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -51,7 +51,7 @@ jobs:
   get-jobs:
     name: Get Jobs
     needs: build-environment
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -63,7 +63,7 @@ jobs:
     needs:
       - build-environment
       - get-jobs
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     continue-on-error: true
     strategy:
       matrix:
@@ -84,7 +84,7 @@ jobs:
   package:
     name: Package
     needs: build-core
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     steps:
       - name: Zip files
         run: |
@@ -98,7 +98,7 @@ jobs:
   release:
     name: Release
     needs: package
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Upload Release Asset
@@ -111,7 +111,7 @@ jobs:
     needs:
       - get-jobs
       - build-core
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     steps:
       - name: Setup SSH
         run: |
@@ -129,7 +129,7 @@ jobs:
     needs: 
       - get-jobs
       - build-core
-    runs-on: [self-hosted, linux, x64 ]
+    runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     if: startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
