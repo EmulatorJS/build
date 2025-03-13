@@ -22,7 +22,7 @@ jobs:
     runs-on: [ self-hosted, linux, x64, emulatorjs-build ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Install Cache Apt Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
@@ -115,10 +115,12 @@ jobs:
     steps:
       - name: Setup SSH
         run: |
+          mkdir -p ~/.ssh
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
           echo "Host ${{ secrets.SSH_HOST }}" > ~/.ssh/config
           echo "  User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
           echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_rsa
       - name: Replace remote files
         run: |
