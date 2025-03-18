@@ -648,5 +648,17 @@
         "save": false,
         "license": "LICENSE.TXT",
         "repo": "https://github.com/EmulatorJS/ppsspp"
+    },
+    {
+        "name": "same_cdi",
+        "extensions": [ "chd", "iso", "cue" ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile.libretro",
+            "arguments": []
+        },
+        "options": {},
+        "license": "COPYING",
+        "repo": "https://github.com/EmulatorJS/same_cdi"
     }
 ]
