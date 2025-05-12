@@ -113,7 +113,7 @@ mkdir -p $logPath
 if [ "$listAllCores" = false ]; then
     # start pulling sources and compile
     if [ ! -d "RetroArch" ]; then
-        git clone --depth 1 "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
+        git clone --depth 1 -b next "https://github.com/EmulatorJS/RetroArch.git" "RetroArch" || exit 1
     fi
     cd RetroArch
     git pull
