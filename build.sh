@@ -68,8 +68,8 @@ buildPath="$PWD/compile"
 outputPath="$PWD/output"
 buildReport="$outputPath/reports"
 logPath="$outputPath/logs"
-outPath="$buildPath/RetroArch/dist-scripts"
-tempPath="RetroArch/dist-scripts/core-temp"
+outPath="$buildPath/RetroArch/emulatorjs"
+tempPath="RetroArch/emulatorjs/core-temp"
 
 build() {
     rm -f *.bc
@@ -263,7 +263,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         fi
 
         echo "Building wasm's for core $name"
-        cd "$buildPath/RetroArch/dist-scripts"
+        cd "$buildPath/RetroArch/emulatorjs"
 
         if [[ "$custom" = "true" ]]; then
             eval "$build_retroarch_command" >> "$logPath/$name-emake.log"
