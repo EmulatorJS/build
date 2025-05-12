@@ -632,13 +632,13 @@
     },
     {
         "name": "ppsspp",
-        "extensions": [ "iso" ],
+        "extensions": [ "elf", "iso", "cso", "prx", "pbp" ],
         "makeoptions": {
             "custom": "true",
             "buildpath": "./",
             "makescript": "",
             "arguments": [],
-            "build_command": "cd libretro/emscripten/ && bash build_emscripten.sh && cd ../../ && cp -r libretro/emscripten/build/ ../RetroArch/ffmpeg && cp libretro/emscripten/build/*.bc ../RetroArch/dist-scripts/",
+            "build_command": "cd libretro/emscripten/ && bash build_emscripten.sh && cd ../../ && cp -r libretro/emscripten/build/ ../RetroArch/ffmpeg && cp libretro/emscripten/build/*.bc ../RetroArch/emulatorjs/",
             "build_retroarch_command": "emmake ./build-emulatorjs.sh --clean --threads"
         },
         "options": {
