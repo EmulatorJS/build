@@ -660,5 +660,20 @@
         "options": {},
         "license": "COPYING",
         "repo": "https://github.com/EmulatorJS/same_cdi"
+    },
+    {
+        "name": "dosbox_pure",
+        "extensions": [ "conf" ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {
+            "requireThreads": true
+        },
+        "options": {},
+        "license": "LICENSE",
+        "repo": "https://github.com/EmulatorJS/dosbox-pure"
     }
 ]
