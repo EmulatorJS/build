@@ -670,9 +670,10 @@
             "arguments": []
         },
         "options": {
-            "requireThreads": true
+            "requireThreads": true,
+            "supportsMouse": true,
+            "useKeyboard": true
         },
-        "options": {},
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/dosbox-pure"
     }
