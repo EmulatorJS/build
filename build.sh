@@ -136,6 +136,7 @@ compileProject() {
     makefileArg="$6"
     custom="$7"
     build_command="$8"
+    requireThreads="$9"
 
     if [ ! -d "$name" ]; then
         git clone "$repo" "$name" --depth 1
@@ -156,9 +157,14 @@ compileProject() {
     else
         cd "$makefilePath"
 
-        build
+        # only build the unthreaded version if requireThreads is false
+        if [ "$requireThreads" = false ]; then
+            build
+            buildLegacy
+        fi
+
+        # build the threaded version
         buildThreads
-        buildLegacy
         buildThreadsLegacy
     fi
 
@@ -192,6 +198,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
     options=`echo $(_jq '.') | jq -r '.options'`
+    optRequireThreads=`echo $(_jq '.') | jq -r '.options.requireThreads'`
     custom=`echo $(_jq '.') | jq -r '.makeoptions.custom'`
     build_command=`echo $(_jq '.') | jq -r '.makeoptions.build_command'`
     build_retroarch_command=`echo $(_jq '.') | jq -r '.makeoptions.build_retroarch_command'`
@@ -212,6 +219,13 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         fi
     fi
 
+    # set requireThreads to false if it's not true
+    if [ -z "$optRequireThreads" ] || [ "$optRequireThreads" != "true" ]; then
+        requireThreads=false
+    else
+        requireThreads=true
+    fi
+
     if [ "$listCoreNames" = false ]; then
         echo "Core: $name"
         echo "Repo: $repo"
@@ -221,6 +235,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         echo "Make script: $makescript"
         echo "Arguments: $argumentstring"
         echo "Options: $options"
+        echo "Require threads: $requireThreads"
         echo "Custom: $custom"
         echo "Build command: $build_command"
         echo "Build RetroArch command: $build_retroarch_command"
@@ -251,7 +266,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
         unset FROZEN_CACHE
         
-        compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" >> "$logPath/$name-compile.log"
+        compileProject "$name" "$repo.git" "$branch" "$buildpath" "$makescript" "$argumentstring" "$custom" "$build_command" "$requireThreads" >> "$logPath/$name-compile.log"
 
         # write JSON stanza for this core to disk
         echo ${row} | base64 --decode > "./core.json"
@@ -268,16 +283,18 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         if [[ "$custom" = "true" ]]; then
             eval "$build_retroarch_command" >> "$logPath/$name-emake.log"
         else
-            mv core-temp/normal/*.bc ./
-            emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
-            rm -f *.bc
+            if [ "$requireThreads" = false ]; then
+                mv core-temp/normal/*.bc ./
+                emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
+                rm -f *.bc
+
+                mv core-temp/legacy/*.bc ./
+                emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
+                rm -f *.bc
+            fi
 
             mv core-temp/threads/*.bc ./
             emmake ./build-emulatorjs.sh --clean --threads >> "$logPath/$name-emake.log"
-            rm -f *.bc
-
-            mv core-temp/legacy/*.bc ./
-            emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
             rm -f *.bc
 
             mv core-temp/legacyThreads/*.bc ./
@@ -290,19 +307,22 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
         echo "Packing core information for $name"
         cd $compileStartPath
-        if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-wasm.data $outputPath
+
+        if [ $requireThreads = false ]; then
+            if [ -f "EmulatorJS/data/cores/$name-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-wasm.data $outputPath
+            fi
+
+            if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
+                7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
+                cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
+            fi
         fi
 
         if [ -f "EmulatorJS/data/cores/$name-thread-wasm.data" ]; then
             7z a -t7z EmulatorJS/data/cores/$name-thread-wasm.data ./core.json ./license.txt ../build.json
             cp EmulatorJS/data/cores/$name-thread-wasm.data $outputPath
-        fi
-
-        if [ -f "EmulatorJS/data/cores/$name-legacy-wasm.data" ]; then
-            7z a -t7z EmulatorJS/data/cores/$name-legacy-wasm.data ./core.json ./license.txt ../build.json
-            cp EmulatorJS/data/cores/$name-legacy-wasm.data $outputPath
         fi
 
         if [ -f "EmulatorJS/data/cores/$name-thread-legacy-wasm.data" ]; then
@@ -312,7 +332,11 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
 
         # create zip file containing the core data files
         cd EmulatorJS/data/cores
-        zip $outputPath/$name.zip $name-wasm.data $name-thread-wasm.data $name-legacy-wasm.data $name-thread-legacy-wasm.data
+        zip $outputPath/$name.zip $name-thread*wasm.data
+        if [ $requireThreads = false ]; then
+            zip -u $outputPath/$name.zip  $name-wasm.data $name-legacy-wasm.data
+        fi
+
         cd $compileStartPath
 
         # clean up to make sure the next build in the json gets the right license and core file
