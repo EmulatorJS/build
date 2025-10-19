@@ -341,6 +341,19 @@
         "repo": "https://github.com/EmulatorJS/Genesis-Plus-GX"
     },
     {
+        "name": "genesis_plus_gx_wide",
+        "extensions": [ "m3u", "mdx", "md", "smd", "gen", "bin", "cue", "iso", "chd", "bms", "sms", "gg", "sg", "68k", "sgd" ],
+        "makeoptions": {
+            "arguments": [],
+            "buildpath": "./",
+            "makescript": "Makefile.libretro"
+        },
+        "options": {},
+        "save": "srm",
+        "license": "LICENSE.txt",
+        "repo": "https://github.com/EmulatorJS/Genesis-Plus-GX-Wide"
+    },
+    {
         "name": "yabause",
         "extensions": [ "cue", "iso", "ccd", "mds", "chd", "zip", "m3u"  ],
         "makeoptions": {
