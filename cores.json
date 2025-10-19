@@ -135,6 +135,19 @@
         "repo": "https://github.com/EmulatorJS/snes9x"
     },
     {
+        "name": "bsnes",
+        "extensions": [ "smc", "sfc", "swc", "fig", "bs", "st" ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile",
+            "arguments": []
+        },
+        "options": {},
+        "save": "srm",
+        "license": "LICENSE.txt",
+        "repo": "https://github.com/EmulatorJS/bsnes-libretro"
+    },
+    {
         "name": "gambatte",
         "extensions": [ "gb", "gbc", "dmg" ],
         "makeoptions": {
