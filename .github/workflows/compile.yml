@@ -116,20 +116,15 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          echo "Host ${{ secrets.SSH_HOST }}" > ~/.ssh/config
+          echo "  User ${{ secrets.SSH_USERNAME }}" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_rsa
-          cat <<EOF > ~/.ssh/config
-          Host remote-server
-            HostName ${{ secrets.SSH_HOST }}
-            User ${{ secrets.SSH_USERNAME }}
-            IdentityFile ~/.ssh/id_rsa
-            StrictHostKeyChecking no
-          EOF
-          #ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Replace remote files
         run: |
-          rsync -Pavz -e "ssh -i $HOME/.ssh/id_rsa" ./output/ remote-server:/
+          rsync -Pavz -e "ssh -i $HOME/.ssh/id_rsa" ./output/ ${{ secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/
 
   release-core:
     name: Release Core
