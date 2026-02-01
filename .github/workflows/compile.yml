@@ -126,7 +126,7 @@ jobs:
             IdentityFile ~/.ssh/id_rsa
             StrictHostKeyChecking no
           EOF
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          #ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Replace remote files
         run: |
           rsync -Pavz -e "ssh -i $HOME/.ssh/id_rsa" ./output/ remote-server:/
