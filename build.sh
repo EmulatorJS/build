@@ -100,6 +100,38 @@ buildThreadsLegacy() {
     mv $linkerfilename "$buildPath/$tempPath/legacyThreads/"
 }
 
+cmakeBuildThreads() {
+    rm -rf "$cmakeBuildDir"
+    mkdir -p "$cmakeBuildDir"
+    cd "$cmakeBuildDir"
+    emcmake cmake .. $cmakeArgsString || exit 1
+    emmake make -j$(nproc) || exit 1
+
+    if [ -n "$archivesString" ]; then
+        printf "create %s\n%s\nsave\nend\n" "$outputArchive" "$archivesString" > merge.mri
+    else
+        local default_excludes="libCatch2.a libCatch2Main.a libCatch2WithMain.a libgtest.a libgtest_main.a libgmock.a libgmock_main.a"
+        local all_excludes="$default_excludes $archivesExcludeString"
+        {
+            echo "create $outputArchive"
+            find . -name '*.a' -not -path './CMakeFiles/*' | sort | while read -r a; do
+                local base="${a##*/}"
+                local skip=0
+                for ex in $all_excludes; do
+                    [ "$base" = "$ex" ] && skip=1 && break
+                done
+                [ $skip -eq 0 ] && echo "addlib ${a#./}"
+            done
+            echo "save"
+            echo "end"
+        } > merge.mri
+    fi
+    emar -M < merge.mri || exit 1
+
+    mv "$outputArchive" "$buildPath/$tempPath/threads/${name}_libretro_emscripten.bc"
+    cd ..
+}
+
 # create compile directory
 mkdir -p $buildPath
 cd $buildPath
@@ -152,7 +184,9 @@ compileProject() {
     git pull
     git submodule update --recursive
 
-    if [[ "$custom" = "true" ]]; then
+    if [[ "$builder" = "cmake" ]]; then
+        cmakeBuildThreads
+    elif [[ "$custom" = "true" ]]; then
         eval "$build_command"
     else
         cd "$makefilePath"
@@ -202,10 +236,31 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     custom=`echo $(_jq '.') | jq -r '.makeoptions.custom'`
     build_command=`echo $(_jq '.') | jq -r '.makeoptions.build_command'`
     build_retroarch_command=`echo $(_jq '.') | jq -r '.makeoptions.build_retroarch_command'`
+    builder=`echo $(_jq '.') | jq -r '.makeoptions.builder // "make"'`
+    cmakeBuildDir=`echo $(_jq '.') | jq -r '.makeoptions.cmake_build_dir // "build-emscripten"'`
+    outputArchive=`echo $(_jq '.') | jq -r '.makeoptions.output_archive // ""'`
+    cmake_args=`echo $(_jq '.') | jq -r '.makeoptions.cmake_args[]? | @base64'`
+    archives=`echo $(_jq '.') | jq -r '.makeoptions.archives[]? | @base64'`
+    archives_exclude=`echo $(_jq '.') | jq -r '.makeoptions.archives_exclude[]? | @base64'`
 
     argumentstring=""
     for rowarg in $(echo "${arguments}"); do
         argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
+    done
+
+    cmakeArgsString=""
+    for rowarg in $(echo "${cmake_args}"); do
+        cmakeArgsString="$cmakeArgsString `echo $rowarg | base64 --decode`"
+    done
+
+    archivesString=""
+    for rowarc in $(echo "${archives}"); do
+        archivesString="${archivesString}addlib `echo $rowarc | base64 --decode`"$'\n'
+    done
+
+    archivesExcludeString=""
+    for rowarc in $(echo "${archives_exclude}"); do
+        archivesExcludeString="$archivesExcludeString `echo $rowarc | base64 --decode`"
     done
 
     # display core details
