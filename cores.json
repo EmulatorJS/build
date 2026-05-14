@@ -743,6 +743,7 @@
         },
         "options": {
             "requireThreads": true,
+            "requiresWebgl2": true,
             "supportsMouse": true,
             "useKeyboard": true
         },

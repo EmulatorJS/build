@@ -194,12 +194,16 @@ compileProject() {
         # only build the unthreaded version if requireThreads is false
         if [ "$requireThreads" = false ]; then
             build
-            buildLegacy
+            if [ "$requiresWebgl2" = false ]; then
+                buildLegacy
+            fi
         fi
 
         # build the threaded version
         buildThreads
-        buildThreadsLegacy
+        if [ "$requiresWebgl2" = false ]; then
+            buildThreadsLegacy
+        fi
     fi
 
     cd "$buildPath"
@@ -233,6 +237,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
     options=`echo $(_jq '.') | jq -r '.options'`
     optRequireThreads=`echo $(_jq '.') | jq -r '.options.requireThreads'`
+    optRequiresWebgl2=`echo $(_jq '.') | jq -r '.options.requiresWebgl2'`
     custom=`echo $(_jq '.') | jq -r '.makeoptions.custom'`
     build_command=`echo $(_jq '.') | jq -r '.makeoptions.build_command'`
     build_retroarch_command=`echo $(_jq '.') | jq -r '.makeoptions.build_retroarch_command'`
@@ -282,6 +287,13 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         requireThreads=true
     fi
 
+    # set requiresWebgl2 to false if it's not true
+    if [ -z "$optRequiresWebgl2" ] || [ "$optRequiresWebgl2" != "true" ]; then
+        requiresWebgl2=false
+    else
+        requiresWebgl2=true
+    fi
+
     if [ "$listCoreNames" = false ]; then
         echo "Core: $name"
         echo "Repo: $repo"
@@ -292,6 +304,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         echo "Arguments: $argumentstring"
         echo "Options: $options"
         echo "Require threads: $requireThreads"
+        echo "Requires WebGL2: $requiresWebgl2"
         echo "Custom: $custom"
         echo "Build command: $build_command"
         echo "Build RetroArch command: $build_retroarch_command"
@@ -344,18 +357,22 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
                 emmake ./build-emulatorjs.sh --clean >> "$logPath/$name-emake.log"
                 rm -f *.bc
 
-                mv core-temp/legacy/*.bc ./
-                emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
-                rm -f *.bc
+                if [ "$requiresWebgl2" = false ]; then
+                    mv core-temp/legacy/*.bc ./
+                    emmake ./build-emulatorjs.sh --clean --legacy >> "$logPath/$name-emake.log"
+                    rm -f *.bc
+                fi
             fi
 
             mv core-temp/threads/*.bc ./
             emmake ./build-emulatorjs.sh --clean --threads >> "$logPath/$name-emake.log"
             rm -f *.bc
 
-            mv core-temp/legacyThreads/*.bc ./
-            emmake ./build-emulatorjs.sh --clean --threads --legacy >> "$logPath/$name-emake.log"
-            rm -f *.bc
+            if [ "$requiresWebgl2" = false ]; then
+                mv core-temp/legacyThreads/*.bc ./
+                emmake ./build-emulatorjs.sh --clean --threads --legacy >> "$logPath/$name-emake.log"
+                rm -f *.bc
+            fi
 
             rm -rf core-temp
         fi
