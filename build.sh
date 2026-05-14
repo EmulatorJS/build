@@ -104,7 +104,7 @@ cmakeBuildThreads() {
     rm -rf "$cmakeBuildDir"
     mkdir -p "$cmakeBuildDir"
     cd "$cmakeBuildDir"
-    emcmake cmake .. $cmakeArgsString || exit 1
+    emcmake cmake .. "${cmakeArgsArray[@]}" || exit 1
     emmake make -j$(nproc) || exit 1
 
     if [ -n "$archivesString" ]; then
@@ -248,10 +248,11 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
     done
 
-    cmakeArgsString=""
-    for rowarg in $(echo "${cmake_args}"); do
-        cmakeArgsString="$cmakeArgsString `echo $rowarg | base64 --decode`"
-    done
+    cmakeArgsArray=()
+    while IFS= read -r rowarg; do
+        [ -z "$rowarg" ] && continue
+        cmakeArgsArray+=("$(echo "$rowarg" | base64 --decode)")
+    done <<< "$cmake_args"
 
     archivesString=""
     for rowarc in $(echo "${archives}"); do
