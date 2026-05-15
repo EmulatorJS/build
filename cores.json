@@ -1220,5 +1220,40 @@
         "options": {},
         "license": "LICENSE",
         "repo": "https://github.com/EmulatorJS/FreeIntv"
+    },
+    {
+        "name": "azahar",
+        "extensions": [ "3ds", "cci", "cxi", "elf", "axf", "app" ],
+        "makeoptions": {
+            "builder": "cmake",
+            "cmake_build_dir": "build-emscripten",
+            "cmake_args": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_CXX_FLAGS=-pthread -msimd128",
+                "-DCMAKE_C_FLAGS=-pthread -msimd128",
+                "-DENABLE_LIBRETRO=ON",
+                "-DENABLE_QT=OFF",
+                "-DENABLE_SDL2=OFF",
+                "-DENABLE_TESTS=OFF",
+                "-DENABLE_CUBEB=OFF",
+                "-DENABLE_OPENAL=OFF",
+                "-DENABLE_VULKAN=OFF",
+                "-DENABLE_LIBUSB=OFF",
+                "-DENABLE_SCRIPTING=OFF",
+                "-DENABLE_WEB_SERVICE=OFF",
+                "-DENABLE_SOFTWARE_RENDERER=OFF",
+                "-DENABLE_GENERIC=ON"
+            ],
+            "output_archive": "azahar_libretro_emscripten.a",
+            "arguments": []
+        },
+        "options": {
+            "requireThreads": true,
+            "requiresWebgl2": true,
+            "supportsMouse": true,
+            "useKeyboard": true
+        },
+        "license": "license.txt",
+        "repo": "https://github.com/EmulatorJS/azahar"
     }
 ]
