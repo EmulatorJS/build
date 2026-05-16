@@ -235,6 +235,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     buildpath=`echo $(_jq '.') | jq -r '.makeoptions.buildpath'`
     makescript=`echo $(_jq '.') | jq -r '.makeoptions.makescript'`
     arguments=`echo $(_jq '.') | jq -r '.makeoptions.arguments[] | @base64'`
+    optInitialMemory=`echo $(_jq '.') | jq -r '.makeoptions.initialmemory'`
     options=`echo $(_jq '.') | jq -r '.options'`
     optRequireThreads=`echo $(_jq '.') | jq -r '.options.requireThreads'`
     optRequiresWebgl2=`echo $(_jq '.') | jq -r '.options.requiresWebgl2'`
@@ -248,7 +249,15 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
     archives=`echo $(_jq '.') | jq -r '.makeoptions.archives[]? | @base64'`
     archives_exclude=`echo $(_jq '.') | jq -r '.makeoptions.archives_exclude[]? | @base64'`
 
-    argumentstring=""
+    # set memory options - if initial memory is set, disable auto memory growth, otherwise enable it with a default initial memory of 256mb
+    initialmemory="INITIAL_HEAP=268435456" # 256mb default
+    autoMemoryGrowth="AUTO_MEMORY_GROWTH=1"
+    if [ -n "$optInitialMemory" ] && [ "$optInitialMemory" != "null" ]; then
+        initialmemory="INITIAL_HEAP=$optInitialMemory"
+        autoMemoryGrowth="AUTO_MEMORY_GROWTH=0"
+    fi
+
+    argumentstring="$initialmemory $autoMemoryGrowth"
     for rowarg in $(echo "${arguments}"); do
         argumentstring="$argumentstring `echo $rowarg | base64 --decode`"
     done
@@ -302,6 +311,7 @@ for row in $(jq -r '.[] | @base64' ../cores.json); do
         echo "Build path: $buildpath"
         echo "Make script: $makescript"
         echo "Arguments: $argumentstring"
+        echo "Initial memory: $initialmemory"
         echo "Options: $options"
         echo "Require threads: $requireThreads"
         echo "Requires WebGL2: $requiresWebgl2"
