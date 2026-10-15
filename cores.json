@@ -1275,24 +1275,5 @@
         "save": "srm",
         "license": "license.txt",
         "repo": "https://github.com/EmulatorJS/blueMSX-libretro"
-    },
-    {
-        "name": "flycast",
-        "extensions": [
-            "chd", "cdi", "gdi", "cue", "bin",
-            "lst", "dat", "elf", "zip", "7z", "m3u"
-        ],
-        "makeoptions": {
-            "buildpath": "./",
-            "makescript": "Makefile",
-            "arguments": []
-        },
-        "options": {
-            "supportsMouse": false,
-            "useKeyboard": false
-        },
-        "save": "srm",
-        "license": "LICENSE",
-        "repo": "https://github.com/EmulatorJS/flycast"
     }
 ]
