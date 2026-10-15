@@ -1255,5 +1255,25 @@
         },
         "license": "license.txt",
         "repo": "https://github.com/EmulatorJS/azahar"
+    },
+    {
+        "name": "bluemsx",
+        "extensions": [
+            "rom", "ri", "mx1", "mx2", "dsk", "col",
+            "sg", "sc", "sf", "cas", "m3u"
+        ],
+        "makeoptions": {
+            "buildpath": "./",
+            "makescript": "Makefile.libretro",
+            "arguments": [],
+            "initialmemory": 67108864
+        },
+        "options": {
+            "supportsMouse": true,
+            "useKeyboard": true
+        },
+        "save": "srm",
+        "license": "license.txt",
+        "repo": "https://github.com/EmulatorJS/blueMSX-libretro"
     }
 ]
