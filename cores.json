@@ -473,6 +473,15 @@
             "arguments": []
         },
         "options": {
+            "file": "Mupen64Plus-Next/Mupen64Plus-Next.opt",
+            "settings": {
+                "mupen64plus-Framerate": "Fullspeed",
+                "mupen64plus-FrameDuping": "True",
+                "mupen64plus-virefresh": "1500",
+                "mupen64plus-43screensize": "320x240",
+                "mupen64plus-EnableCopyColorToRDRAM": "Off",
+                "mupen64plus-EnableCopyDepthToRDRAM": "Off"
+            },
             "defaultWebGL2": true
         },
         "save": "srm",
