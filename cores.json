@@ -49,7 +49,14 @@
             ]
         },
         "options": {
-            "supportsMouse": true
+            "file": "VICE x64/VICE x64.opt",
+            "settings": {
+                "vice_drive_true_emulation": "enabled",
+                "vice_virtual_device_traps": "disabled",
+                "vice_autoloadwarp": "enabled"
+            },
+            "supportsMouse": true,
+            "defaultWebGL2": true
         },
         "save": "nvr",
         "license": "COPYING",
