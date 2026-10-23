@@ -1275,5 +1275,31 @@
         "save": "srm",
         "license": "license.txt",
         "repo": "https://github.com/EmulatorJS/blueMSX-libretro"
+    },
+    {
+        "name": "zcdi",
+        "extensions": [ "chd", "cue", "bin", "iso", "m3u" ],
+        "makeoptions": {
+            "builder": "cmake",
+            "cmake_build_dir": "build-emscripten",
+            "cmake_args": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DLIBRETRO_STATIC=ON",
+                "-DLIBRETRO_SUFFIX=_emscripten",
+                "-DZCDI_BUILD_TESTS=OFF"
+            ],
+            "archives": [
+                "zcdi_libretro_emscripten.a"
+            ],
+            "output_archive": "zcdi_libretro_emscripten.a",
+            "arguments": []
+        },
+        "options": {
+            "defaultWebGL2": true,
+            "supportsMouse": true
+        },
+        "save": "srm",
+        "license": "LICENSE",
+        "repo": "https://github.com/pastisme/zcdi"
     }
 ]

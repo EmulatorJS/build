@@ -100,7 +100,7 @@ buildThreadsLegacy() {
     mv $linkerfilename "$buildPath/$tempPath/legacyThreads/"
 }
 
-cmakeBuildThreads() {
+cmakeCompile() {
     rm -rf "$cmakeBuildDir"
     mkdir -p "$cmakeBuildDir"
     cd "$cmakeBuildDir"
@@ -127,7 +127,17 @@ cmakeBuildThreads() {
         } > merge.mri
     fi
     emar -M < merge.mri || exit 1
-
+}
+cmakeBuild() {
+    cmakeCompile
+    if [ "$requiresWebgl2" = false ]; then
+        cp "$outputArchive" "$buildPath/$tempPath/legacy/${name}_libretro_emscripten.bc"
+    fi
+    mv "$outputArchive" "$buildPath/$tempPath/normal/${name}_libretro_emscripten.bc"
+    cd ..
+}
+cmakeBuildThreads() {
+    cmakeCompile
     mv "$outputArchive" "$buildPath/$tempPath/threads/${name}_libretro_emscripten.bc"
     cd ..
 }
@@ -185,7 +195,11 @@ compileProject() {
     git submodule update --recursive
 
     if [[ "$builder" = "cmake" ]]; then
-        cmakeBuildThreads
+        if [ "$requireThreads" = true ]; then
+            cmakeBuildThreads
+        else
+            cmakeBuild
+        fi
     elif [[ "$custom" = "true" ]]; then
         eval "$build_command"
     else
